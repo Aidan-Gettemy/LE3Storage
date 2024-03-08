@@ -1,9 +1,9 @@
 ------- OpenFAST EXAMPLE INPUT FILE -------------------------------------------
-FAST Certification Test #18: NREL 5.0 MW Baseline Wind Turbine (Onshore)
+FAST Certification Test #  Test________________
 ---------------------- SIMULATION CONTROL --------------------------------------
 True          Echo            - Echo input data to <RootName>.ech (flag)
 "FATAL"       AbortLevel      - Error level when simulation should abort (string) {"WARNING", "SEVERE", "FATAL"}
-         100   TMax            - Total run time (s)
+         200.0000   TMax            - Total run time (s)
     0.00625   DT              - Recommended module time step (s)
           2   InterpOrder     - Interpolation order for input/output time history (-) {1=linear, 2=quadratic}
           0   NumCrctn        - Number of correction iterations (-) {0=explicit calculation, i.e., no corrections}
@@ -21,7 +21,7 @@ True          Echo            - Echo input data to <RootName>.ech (flag)
           0   MHK             - MHK turbine type (switch) {0=Not an MHK turbine; 1=Fixed MHK turbine; 2=Floating MHK turbine}
 ---------------------- ENVIRONMENTAL CONDITIONS --------------------------------
     9.80665   Gravity         - Gravitational acceleration (m/s^2)
-      1.225   AirDens         - Air density (kg/m^3)
+      1.1638   AirDens         - Air density (kg/m^3)
           0   WtrDens         - Water density (kg/m^3)
   1.464E-05   KinVisc         - Kinematic viscosity of working fluid (m^2/s)
         335   SpdSound        - Speed of sound in working fluid (m/s)
