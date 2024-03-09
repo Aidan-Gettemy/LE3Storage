@@ -1,0 +1,181 @@
+! ------------ AirfoilInfo v1.01.x Input File ----------------------------------
+! NACA64 airfoil with an aspect ratio of 17.  Original -180 to 180deg Cl, Cd, and Cm versus AOA data taken from Appendix A of DOWEC document 10046_009.pdf (numerical values obtained from Koert Lindenburg of ECN).
+! Cl and Cd values corrected for rotational stall delay and Cd values corrected using the Viterna method for 0 to 90deg AOA by Jason Jonkman using AirfoilPrep_v2p0.xls.
+! note that this file uses Marshall Buhl's new input file processing; start all comment lines with !
+! ------------------------------------------------------------------------------
+"DEFAULT"     InterpOrd         ! Interpolation order to use for quasi-steady table lookup {1=linear; 3=cubic spline; "default"} [default=1]
+          1   NonDimArea        ! The non-dimensional area of the airfoil (area/chord^2) (set to 1.0 if unsure or unneeded)
+@"NACA64_A17_coords.txt"    NumCoords         ! The number of coordinates in the airfoil shape file.  Set to zero if coordinates not included.
+"unused"      BL_file           ! The file name including the boundary layer characteristics of the profile. Ignored if the aeroacoustic module is not called.
+          1   NumTabs           ! Number of airfoil tables in this file.
+! ------------------------------------------------------------------------------
+! data for table 1
+! ------------------------------------------------------------------------------
+       0.75   Re                ! Reynolds number in millions
+          0   UserProp          ! User property (control) setting
+True          InclUAdata        ! Is unsteady aerodynamics data included in this table? If TRUE, then include 30 UA coefficients below this line
+!........................................
+     -4.432   alpha0            ! 0-lift angle of attack, depends on airfoil.
+          9   alpha1            ! Angle of attack at f=0.7, (approximately the stall angle) for AOA>alpha0. (deg)
+         -9   alpha2            ! Angle of attack at f=0.7, (approximately the stall angle) for AOA<alpha0. (deg)
+          1   eta_e             ! Recovery factor in the range [0.85 - 0.95] used only for UAMOD=1, it is set to 1 in the code when flookup=True. (-)
+     6.0031   C_nalpha          ! Slope of the 2D normal force coefficient curve. (1/rad)
+"Default"     T_f0              ! Initial value of the time constant associated with Df in the expression of Df and f''. [default = 3]
+"Default"     T_V0              ! Initial value of the time constant associated with the vortex lift decay process; it is used in the expression of Cvn. It depends on Re,M, and airfoil class. [default = 6]
+"Default"     T_p               ! Boundary-layer,leading edge pressure gradient time constant in the expression of Dp. It should be tuned based on airfoil experimental data. [default = 1.7]
+"Default"     T_VL              ! Initial value of the time constant associated with the vortex advection process; it represents the non-dimensional time in semi-chords, needed for a vortex to travel from LE to trailing edge (TE); it is used in the expression of Cvn. It depends on Re, M (weakly), and airfoil. [valid range = 6 - 13, default = 11]
+"Default"     b1                ! Constant in the expression of phi_alpha^c and phi_q^c.  This value is relatively insensitive for thin airfoils, but may be different for turbine airfoils. [from experimental results, defaults to 0.14]
+"Default"     b2                ! Constant in the expression of phi_alpha^c and phi_q^c.  This value is relatively insensitive for thin airfoils, but may be different for turbine airfoils. [from experimental results, defaults to 0.53]
+"Default"     b5                ! Constant in the expression of K'''_q,Cm_q^nc, and k_m,q.  [from  experimental results, defaults to 5]
+"Default"     A1                ! Constant in the expression of phi_alpha^c and phi_q^c.  This value is relatively insensitive for thin airfoils, but may be different for turbine airfoils. [from experimental results, defaults to 0.3]
+"Default"     A2                ! Constant in the expression of phi_alpha^c and phi_q^c.  This value is relatively insensitive for thin airfoils, but may be different for turbine airfoils. [from experimental results, defaults to 0.7]
+"Default"     A5                ! Constant in the expression of K'''_q,Cm_q^nc, and k_m,q. [from experimental results, defaults to 1]
+          0   S1                ! Constant in the f curve best-fit for alpha0<=AOA<=alpha1; by definition it depends on the airfoil. [ignored if UAMod<>1]
+          0   S2                ! Constant in the f curve best-fit for         AOA> alpha1; by definition it depends on the airfoil. [ignored if UAMod<>1]
+          0   S3                ! Constant in the f curve best-fit for alpha2<=AOA< alpha0; by definition it depends on the airfoil. [ignored if UAMod<>1]
+          0   S4                ! Constant in the f curve best-fit for         AOA< alpha2; by definition it depends on the airfoil. [ignored if UAMod<>1]
+     1.4073   Cn1               ! Critical value of C0n at leading edge separation. It should be extracted from airfoil data at a given Mach and Reynolds number. It can be calculated from the static value of Cn at either the break in the pitching moment or the loss of chord force at the onset of stall. It is close to the condition of maximum lift of the airfoil at low Mach numbers.
+    -0.7945   Cn2               ! As Cn1 for negative AOAs.
+       0.19   St_sh             ! Strouhal's shedding frequency constant.  [default = 0.19]
+     0.0065   Cd0               ! 2D drag coefficient value at 0-lift.
+     -0.088   Cm0               ! 2D pitching moment coefficient about 1/4-chord location, at 0-lift, positive if nose up. [If the aerodynamics coefficients table does not include a column for Cm, this needs to be set to 0.0]
+          0   k0                ! Constant in the \hat(x)_cp curve best-fit; = (\hat(x)_AC-0.25).  [ignored if UAMod<>1]
+          0   k1                ! Constant in the \hat(x)_cp curve best-fit.  [ignored if UAMod<>1]
+          0   k2                ! Constant in the \hat(x)_cp curve best-fit.  [ignored if UAMod<>1]
+          0   k3                ! Constant in the \hat(x)_cp curve best-fit.  [ignored if UAMod<>1]
+          0   k1_hat            ! Constant in the expression of Cc due to leading edge vortex effects.  [ignored if UAMod<>1]
+"Default"     x_cp_bar          ! Constant in the expression of \hat(x)_cp^v. [ignored if UAMod<>1, default = 0.2]
+"Default"     UACutout          ! Angle of attack above which unsteady aerodynamics are disabled (deg). [Specifying the string "Default" sets UACutout to 45 degrees]
+"DEFAULT"     filtCutOff        ! Reduced frequency cut-off for low-pass filtering the AoA input to UA, as well as the 1st and 2nd derivatives (-) [default = 0.5]
+!........................................
+! Table of aerodynamics coefficients
+        127   NumAlf            ! Number of data lines in the following table
+!    Alpha      Cl      Cd        Cm
+!    (deg)      (-)     (-)       (-)
+   -180.00   0.0000   0.0726   0.0000
+   -175.00   0.2419   0.1250   0.0000
+   -170.00   0.4844   0.3502   0.0000
+   -160.00   0.4262   1.0292   0.0000
+   -155.00   0.4759   1.4370   0.0000
+   -150.00   0.5063   1.8649   0.0000
+   -145.00   0.5193   2.2979   0.0000
+   -140.00   0.5160   2.7232   0.0000
+   -135.00   0.4986   3.1302   0.0000
+   -130.00   0.4682   3.5105   0.0000
+   -125.00   0.4268   3.8570   0.0000
+   -120.00   0.3757   4.1635   0.0000
+   -115.00   0.3175   4.4257   0.0000
+   -110.00   0.2522   4.6405   0.0000
+   -105.00   0.1824   4.8048   0.0000
+   -100.00   0.1093   4.9170   0.0000
+   -95.00   0.0336   4.9764   0.0000
+   -90.00   -0.0433   4.9819   0.0000
+   -85.00   -0.1190   4.9339   0.0000
+   -80.00   -0.1934   4.8330   0.0000
+   -75.00   -0.2645   4.6805   0.0000
+   -70.00   -0.3311   4.4777   0.0000
+   -65.00   -0.3919   4.2284   0.0000
+   -60.00   -0.4456   3.9347   0.0000
+   -55.00   -0.4908   3.6014   0.0000
+   -50.00   -0.5264   3.2340   0.0000
+   -45.00   -0.5497   2.8387   0.0000
+   -40.00   -0.5600   2.4237   0.0000
+   -35.00   -0.5561   1.9987   0.0000
+   -30.00   -0.5361   1.5748   0.0000
+   -25.00   -0.5516   1.1260   0.0000
+   -24.00   -0.5626   1.0318   0.0000
+   -23.00   -0.5755   0.9372   0.0000
+   -22.00   -0.5891   0.8422   0.0000
+   -21.00   -0.6040   0.7480   0.0000
+   -20.00   -0.6195   0.6545   0.0000
+   -19.00   -0.6350   0.5625   0.0000
+   -18.00   -0.6499   0.4723   0.0000
+   -17.00   -0.6997   0.3802   0.0000
+   -16.00   -0.7197   0.2882   0.0000
+   -15.00   -0.7146   0.1962   0.0000
+   -14.00   -0.6971   0.1038   0.0000
+   -13.50   -0.6809   0.0579   0.0000
+   -13.00   -0.6564   0.0554   0.0000
+   -12.00   -0.5846   0.0491   0.0000
+   -11.00   -0.5219   0.0444   0.0000
+   -10.00   -0.4598   0.0407   0.0000
+   -9.00   -0.3848   0.0363   0.0000
+   -8.00   -0.3091   0.0334   0.0000
+   -7.00   -0.2425   0.0315   0.0000
+   -6.00   -0.1707   0.0301   0.0000
+   -5.00   -0.0976   0.0290   0.0000
+   -4.00   -0.0110   0.0264   0.0000
+   -3.00   0.0569   0.0235   0.0000
+   -2.00   0.1377   0.0198   0.0000
+   -1.00   0.2121   0.0191   0.0000
+   0.00   0.2858   0.0191   0.0000
+   1.00   0.3595   0.0191   0.0000
+   2.00   0.4333   0.0194   0.0000
+   3.00   0.5070   0.0194   0.0000
+   4.00   0.5807   0.0198   0.0000
+   5.00   0.6538   0.0213   0.0000
+   6.00   0.7133   0.0334   0.0000
+   7.00   0.7637   0.0414   0.0000
+   8.00   0.8129   0.0455   0.0000
+   8.50   0.8361   0.0477   0.0000
+   9.00   0.8575   0.0499   0.0000
+   9.50   0.8769   0.0524   0.0000
+   10.00   0.8937   0.0550   0.0000
+   10.50   0.9053   0.0979   0.0000
+   11.00   0.9150   0.1404   0.0000
+   11.50   0.9215   0.1826   0.0000
+   12.00   0.9273   0.2248   0.0000
+   12.50   0.9331   0.2666   0.0000
+   13.00   0.9383   0.3084   0.0000
+   13.50   0.9396   0.3498   0.0000
+   14.00   0.9364   0.3905   0.0000
+   14.50   0.9338   0.4312   0.0000
+   15.00   0.9344   0.4719   0.0000
+   15.50   0.9357   0.5126   0.0000
+   16.00   0.9364   0.5533   0.0000
+   16.50   0.9338   0.5936   0.0000
+   17.00   0.9299   0.6336   0.0000
+   17.50   0.9306   0.6736   0.0000
+   18.00   0.9364   0.7139   0.0000
+   18.50   0.9390   0.7542   0.0000
+   19.00   0.9364   0.7938   0.0000
+   19.50   0.9299   0.8331   0.0000
+   20.00   0.9234   0.8723   0.0000
+   21.00   0.9060   0.9497   0.0000
+   22.00   0.8788   1.0263   0.0000
+   23.00   0.8407   1.1015   0.0000
+   24.00   0.7889   1.1748   0.0000
+   25.00   0.7553   1.2382   0.0000
+   26.00   0.7217   1.3031   0.0000
+   28.00   0.6564   1.4359   0.0000
+   30.00   0.5988   1.5745   0.0000
+   32.00   0.5529   1.7197   0.0000
+   35.00   0.5173   1.9521   0.0000
+   40.00   0.5199   2.3657   0.0000
+   45.00   0.5128   2.7768   0.0000
+   50.00   0.4934   3.1768   0.0000
+   55.00   0.4637   3.5596   0.0000
+   60.00   0.4242   3.9208   0.0000
+   65.00   0.3764   4.2555   0.0000
+   70.00   0.3201   4.5606   0.0000
+   75.00   0.2574   4.8319   0.0000
+   80.00   0.1882   5.0633   0.0000
+   85.00   0.1138   5.2448   0.0000
+   90.00   0.0343   5.3405   0.0000
+   95.00   -0.0479   5.3288   0.0000
+   100.00   -0.1287   5.2598   0.0000
+   105.00   -0.2076   5.1348   0.0000
+   110.00   -0.2819   4.9544   0.0000
+   115.00   -0.3511   4.7205   0.0000
+   120.00   -0.4139   4.4363   0.0000
+   125.00   -0.4675   4.1052   0.0000
+   130.00   -0.5109   3.7323   0.0000
+   135.00   -0.5432   3.3235   0.0000
+   140.00   -0.5613   2.8860   0.0000
+   145.00   -0.5639   2.4299   0.0000
+   150.00   -0.5497   1.9664   0.0000
+   155.00   -0.5160   1.5092   0.0000
+   160.00   -0.4617   1.0747   0.0000
+   170.00   -0.4844   0.3560   0.0000
+   175.00   -0.2419   0.1225   0.0000
+   180.00   0.0000   0.0726   0.0000
