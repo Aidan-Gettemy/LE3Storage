@@ -1,7 +1,6 @@
 % EXPERIMENT 2: WIND SPEED
 %% Step One: Simulation
 clc;close;clear;
-% first without blade pitch control
 
 % Link the helper function
 addpath funcs/
@@ -26,16 +25,16 @@ StatusFileID = "WindSpeed_Status.txt";
 status = mkdir(ExperimentID);
 
 % We must set the test duration:
-test_dur = 180;
+test_dur = 190;
 
 % blade pitch control (0=off, 1=on)
 bld_fix = 0;
 
 % we average last seconds
-trans = 50;
+trans = 60;
 
-% Test Points for Wind Direction
-test_points = linspace(11.4*.8,11.4*1.2,11);
+% Test Points for Wind Speed
+test_points = linspace(11.4*.5,11.4*1.5,11);
 
 % Run the Simulations
 
@@ -71,17 +70,18 @@ for i = 1:numel(test_points)
     % This is the address of the out file
     test_out = ExperimentID + "/" + TestID + "/" + TestID + ".out";
     [test1outs,stat1] = create_mat_files(test_out);
-
+    n=1;
     % Now make the summary files
     SumID = ExperimentID + "/" + TestID + "/" +"Sensor_Data";
     tablename = "SensorDataT.txt";
     status = create_sum_table(SumID,tablename,trans);
-    n=1;
+    
     % Delete the .out files  
     oldfolder = cd(ExperimentID+"/"+TestID);
     delete *out
     delete *outb
     cd(oldfolder)
+
     % As we go, write down the result folder of each completed test to this
     % status file:
     if i>1
