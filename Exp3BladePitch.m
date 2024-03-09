@@ -1,7 +1,6 @@
 % EXPERIMENT 3: BLADE PITCH
 %% Step One: Simulation
 clc;close;clear;
-% first without blade pitch control
 
 % Link the helper function
 addpath funcs/
@@ -26,24 +25,24 @@ StatusFileID = "BladePitch_Status.txt";
 status = mkdir(ExperimentID);
 
 % We must set the test duration:
-test_dur = 180;
+test_dur = 190;
 
 % blade pitch control (0=off, 1=on)
 bld_fix = 0;
 
 % we average last seconds
-trans = 50;
+trans = 60;
 
-% Test Points for Wind Direction
-test_points = linspace(-5,5,11);
+% Test Points for Wind Speed
+test_points = linspace(-13,30,11);
 
 % Run the Simulations
 
 % As we go, write down the result folder of each completed test to a file
 % that tracks the progress of the simulation
 for i = 1:numel(test_points)
-    % Set the vector input
-    vector = [0,11.4,test_points(i),1225,...
+    % Set the vector input, note the slower speed
+    vector = [0,7,test_points(i),1225,...
         0,0,0,0,0,0,...
             0,0,0,0,0,0,...
                 0,0,0,0,0,0];
@@ -82,6 +81,7 @@ for i = 1:numel(test_points)
     delete *out
     delete *outb
     cd(oldfolder)
+
     % As we go, write down the result folder of each completed test to this
     % status file:
     if i>1
