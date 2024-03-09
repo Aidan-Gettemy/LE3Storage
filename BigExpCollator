@@ -1,0 +1,32 @@
+clc;close;clear;
+addpath funcs/
+StatusFileID = "Morris2_Status.txt";
+
+data = gather_up(StatusFileID);
+
+% Grab the names:
+nameID = data{1,1} + "/Sensor_Data/output_names.mat";
+names = load(nameID);
+names = names.Output_Names;
+
+for i = 1:numel(names)
+    varnames(i) = string(names{1,i}{1});
+end
+
+STDmat = zeros(numel(data),numel(names));
+MEANmat = zeros(numel(data),numel(names));
+
+for i = 1:numel(data)
+    tableID = data{1,i}+"/Sensor_Data/SensorData_Mean_Std.txt";
+    table_mstd = readtable(tableID,"ReadRowNames",true);
+    for j = 1:numel(varnames)
+        STDmat(i,j) = table_mstd{j,2};
+        MEANmat(i,j) = table_mstd{j,1};
+    end
+end
+
+StdTab = array2table(STDmat,"VariableNames",varnames);
+MeanTab = array2table(MEANmat,"VariableNames",varnames);
+
+writetable(MeanTab,"Morris_Means.txt");
+writetable(StdTab,"Morris_STD.txt");
