@@ -1,4 +1,4 @@
-% EXPERIMENT 5: Erosion Levels
+% EXPERIMENT 5: EROSION LEVELS
 %% Step One: Simulation
 clc;close;clear;
 
