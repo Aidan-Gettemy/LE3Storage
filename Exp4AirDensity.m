@@ -1,7 +1,6 @@
 % EXPERIMENT 4: AIR DENSITY
-%% Step One: Simulation
+%% Step One: Simulation; note we let the blade control activate
 clc;close;clear;
-% first without blade pitch control
 
 % Link the helper function
 addpath funcs/
@@ -26,15 +25,15 @@ StatusFileID = "AirDensity_Status.txt";
 status = mkdir(ExperimentID);
 
 % We must set the test duration:
-test_dur = 180;
+test_dur = 190;
 
 % blade pitch control (0=off, 1=on)
-bld_fix = 0;
+bld_fix = 1;
 
 % we average last seconds
-trans = 50;
+trans = 60;
 
-% Test Points for Wind Direction
+% Test Points for Wind Speed
 test_points = linspace(1225*.9,1225*1.1,11);
 
 % Run the Simulations
@@ -42,7 +41,7 @@ test_points = linspace(1225*.9,1225*1.1,11);
 % As we go, write down the result folder of each completed test to a file
 % that tracks the progress of the simulation
 for i = 1:numel(test_points)
-    % Set the vector input
+    % Set the vector input, note the slower speed
     vector = [0,11.4,0,test_points(i),...
         0,0,0,0,0,0,...
             0,0,0,0,0,0,...
@@ -71,7 +70,7 @@ for i = 1:numel(test_points)
     % This is the address of the out file
     test_out = ExperimentID + "/" + TestID + "/" + TestID + ".out";
     [test1outs,stat1] = create_mat_files(test_out);
-
+    n=1;
     % Now make the summary files
     SumID = ExperimentID + "/" + TestID + "/" +"Sensor_Data";
     tablename = "SensorDataT.txt";
@@ -82,9 +81,9 @@ for i = 1:numel(test_points)
     delete *out
     delete *outb
     cd(oldfolder)
+
     % As we go, write down the result folder of each completed test to this
     % status file:
-    n=1;
     if i>1
         test_cell = cell(1,n);
         data = gather_up(StatusFileID);
