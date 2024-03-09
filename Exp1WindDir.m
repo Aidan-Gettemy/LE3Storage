@@ -1,4 +1,4 @@
-% EXPERIMENT 1: Wind Direction
+% EXPERIMENT 1: WIND DIRECTION
 %% Step One: Simulation
 clc;close;clear;
 
