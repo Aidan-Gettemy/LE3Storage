@@ -10,10 +10,10 @@ function [mean_exp_table, std_exp_table, f1_table, f2_table] = full_exp_table(co
     for i = 1:numel(collection)
         data = readtable(collection{1,i},ReadRowNames=true);
         test_str = "Test" + num2str(i);
-        command1 = "mean_exp_table."+test_str+ " = data.Means";
-        command2 = "std_exp_table."+test_str +" = data.Stds";
-        command3 = "f1_table."+test_str +" = data.DomFreq";
-        command4 = "f2_table."+test_str +" = data.subDomFreq";
+        command1 = "mean_exp_table."+test_str+ " = data.Means;";
+        command2 = "std_exp_table."+test_str +" = data.Stds;";
+        command3 = "f1_table."+test_str +" = data.DomFreq;";
+        command4 = "f2_table."+test_str +" = data.subDomFreq;";
         eval(command1)
         eval(command2)
         eval(command3)
