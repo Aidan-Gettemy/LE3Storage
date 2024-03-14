@@ -116,7 +116,7 @@ for i = 1:numel(M(:,1))
 end
 %% Now make the summary tables etc.
 data = gather_up(StatusFileID);
-for i = numel(data)
+for i = 1:numel(data)
     disp(data{i})
     line = split(data{i},"/");
     TestID = line{3};
