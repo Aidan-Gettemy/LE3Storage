@@ -68,11 +68,11 @@ for i = numel(M(:,1))
                     0,0,0,0,0,0];
     run_point = M(i,:);
 
-    % translate each input into the relevant range
+    % translate each input into the relevant range (inputs are between 0 and 1)
     vector(1,1) = 30*run_point(1,1);% wind direction
     vector(1,2) = 3+22*run_point(1,2);% wind speed
     vector(1,3) = 0;% start the blade pitch at 0;
-    vector(1,4) = 1225*.95 + 1225*(0.1)*run_point(1,3);
+    vector(1,4) = 1225*.9 + 1225*(0.2)*run_point(1,3); %air density
     vector(1,5:22) = run_point(1,4:21);
 
     % Set up the test
