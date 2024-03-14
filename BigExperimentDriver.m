@@ -42,7 +42,7 @@ trans = ;
 
 % As we go, write down the result folder of each completed test to a file
 % that tracks the progress of the simulation
-for i = numel(M(:,1))
+for i = 1:numel(M(:,1))
     % If we have 100 points, its time to take a break
     if i == 100
         ttl = "Process some of the results";
