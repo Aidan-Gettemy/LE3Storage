@@ -1,0 +1,292 @@
+% ONE AT A TIME ANALYSIS OF 5MW REFERENCE TURBINE
+clc;close;clear;
+%% First; we will make the Heat Map
+
+% We have a special metric to rank change
+
+% We will plot 25 or less outputs per page.
+
+ExperimentIDs = {"Experiment_wd","Experiment_wind_speed",...
+    "Experiment_BladePitch","Experiment_AirDensity",...
+    "Experiment_Er1",...
+    "Experiment_Er2",...
+    "Experiment_Er3_1","Experiment_Er3_2",...
+    "Experiment_Er3_3","Experiment_Er3_4",...
+    "Experiment_Er3_5","Experiment_Er3_6",...
+    "Experiment_Er4"};
+
+% We need names for the rows;
+meanID = "Data/Experiment_AirDensity/Experiment_means.txt";
+tableMEAN = readtable(meanID,"ReadRowNames",true);
+names_of_rows = tableMEAN.Row;
+
+selected_channels = [7:46,51:59,63:155];
+selected_names = cell(numel(selected_channels),1);
+
+for i = 1:numel(selected_channels)
+    selected_names{i,1} = names_of_rows{(selected_channels(1,i)),1};
+end
+
+%%
+Heat_Matrix = ones(numel(selected_channels),numel(ExperimentIDs));
+
+for i = 1:numel(ExperimentIDs)
+    % Go to the selected Experiment, extract the mean and std tables
+    meanID = "Data/" + ExperimentIDs{1,i} + "/Experiment_means.txt";
+    stdID = "Data/" + ExperimentIDs{1,i}+ "/Experiment_stds.txt";
+    tableMEAN = readtable(meanID,"ReadRowNames",true);
+    tableSTD = readtable(stdID,"ReadRowNames",true);
+    % Read each line of the table, calculate the norm
+    for j = 1:numel(selected_channels)
+        k = selected_channels(j);
+        means = tableMEAN(k,:).Variables;
+        stds = tableSTD(k,:).Variables;
+        B = zeros(2,numel(stds));
+        B(1,:) = means;B(2,:) = stds;
+        Heat_Matrix(j,i) = mean_std_norm(B);
+    end
+end
+mkdir("OAT_Analysis") % We need a folder to place these results in
+
+% The Heat_Matrix is now ready, but we must plot it carefully.
+n = 25; % how many rows to plot at once;
+iter = 0;
+plot_rows = zeros(1,n);
+for i = 1:numel(selected_channels)
+    iter = iter + 1;
+    if (n - iter) >= 0
+        plot_rows(1,iter) = i;
+    else
+        % Here we will plot
+        f = figure;
+        f.Position(1:4) = [100 100 600 1000];
+        
+        
+        status = plot_heat(selected_names, ExperimentIDs,...
+            Heat_Matrix, plot_rows);
+        % Save
+        prt = "OAT_Analysis" + "/" + "HeatMap_"+num2str(i-n)+...
+            "to"+num2str(i-1)+".pdf";
+        print(gcf,prt,"-dpdf")
+        iter = 1;
+        plot_rows = zeros(1,n);
+        plot_rows(1,1) = i;
+    end
+
+    if i == numel(selected_channels)
+        % Plot the last rows
+        f = figure;
+        
+        f.Position(1:4) = [100 100 600 1000];
+        status = plot_heat(selected_names, ExperimentIDs,...
+            Heat_Matrix, plot_rows(1:iter));
+        % save
+        prt = "OAT_Analysis" + "/" + "HeatMap_"+num2str(i-iter+1)+...
+            "to"+num2str(i-1)+".pdf";
+        print(gcf,prt,"-dpdf")
+    end
+end
+
+%% Now we can make little cards for sensitivty of each output
+
+status = OutPut_Sensitivity_means(34, ExperimentIDs,names_of_rows);
+%-------------------------------------------------------------%
+
+function output = mean_std_norm(B)
+%   Input:
+%       B: an array with the first row the means and the second row the
+%       stds for a given experiment
+%   Output:
+%       output: a scalar value that denotes how much the experiment changed
+%       the output parameter
+    dif = 0;
+    sum = 0;
+    k = numel(B(1,:));
+    for i = 1:k-1
+        dif = dif + norm(B(:,i)-B(:,i+1)); % difference in norm between tests
+        sum = sum + norm(B(:,i));
+    end
+    avrg = (sum + norm(B(:,k)))/(k);
+    output = (1/k)*(dif/avrg); % Normalize by the number of experiments we had
+end
+
+function status = plot_heat(row_names, column_names,...
+    Heat_matrix, plot_now)
+%   Input:
+%       row_names: this is the full cell list of the output channels
+%       column_names: these are the experiments
+%       selected_channels: these will correspond to the outputs we want
+%       Heat_matrix: This contains all the values, rows are channels,
+%       columns are experiments
+%       plot_now: this will be the entrys of selected channels we are going
+%       to plot (rows)
+ 
+    a = plot_now(1,1); % The first row of the matrix for now
+    b = plot_now(1,end); % The last row of the matrix for now
+
+    yaxisnames = cell(numel(plot_now),1);
+    xaxisnames = column_names';
+
+    % We are going to grab the index of the selected channel which holds
+    % the row number of the output that corresponds to the rows of the part
+    % of heat matrix we are plotting right now
+    for i = 1:numel(plot_now)
+        yaxisnames{i,1} = row_names{plot_now(1,i),1};
+    end
+
+    h = heatmap(xaxisnames,yaxisnames,Heat_matrix(a:b,:));
+    ttl = "Heat Map of Combined-change-norm; rows " + num2str(a) + " - "...
+        + num2str(b);
+    h.Title = ttl;
+    h.XLabel = 'Experiment';
+    h.YLabel = 'Output';
+    h.Colormap = parula;
+    status = " Successful Heat Map Generated ";
+end
+
+function status = OutPut_Sensitivity_means(num, experimentIDs,names_of_rows)
+    % num: this is the number of the output we are looking at
+    % experimentIDs: this is the cell that contains all the experiments we
+    % want 
+
+    %vals = zeros(1,numel(experimentIDs));
+
+    allmeans = zeros(numel(experimentIDs),50);
+    allstds = zeros(numel(experimentIDs),50);
+
+    name = names_of_rows{num,1};
+
+    % Calculate the norms for each experiment
+
+    for i = 1:numel(experimentIDs)
+        % Go to the selected Experiment, extract the mean and std tables
+        meanID = "Data/" + experimentIDs{1,i} + "/Experiment_means.txt";
+        stdID = "Data/" + experimentIDs{1,i}+ "/Experiment_stds.txt";
+        tableMEAN = readtable(meanID,"ReadRowNames",true);
+        tableSTD = readtable(stdID,"ReadRowNames",true);
+        % Read each line of the table, calculate the norm
+        k = num;
+        means = tableMEAN(k,:).Variables;
+        stds = tableSTD(k,:).Variables;
+        B = zeros(2,numel(stds));
+        B(1,:) = means;B(2,:) = stds;
+        vals(i) = mean_std_norm(B);
+        allmeans(i,1:numel(means)) = means;
+        allstds(i,1:numel(stds)) = stds;
+    end
+
+    
+    f = figure;
+    f.Position(1:4) = [100 100 650 1100];
+    % Make a BarChart 
+    subplot(8,2,[1,2,3,4])
+    for i = 1:numel(experimentIDs)
+        nams(i) = experimentIDs{1,i};
+    end
+    bar(nams,vals);
+    barchart_title = name + " Norm vs Experiment # (means)";
+    title(barchart_title);
+
+    % Make a subplot for each of the means
+    % wind direction
+    subplot(8,2,7)
+    n = 20;
+    xs = linspace(0,30,n);
+    xlabel("wind direction")
+    
+    ys = allmeans(1,1:n);
+    ylabel("mean")
+
+    plot(xs,ys,Linewidth=2)
+    lgd = name + " mean vs wind direction ";
+    legend(lgd,Location="southwest")
+    
+    % wind speed
+    subplot(8,2,8)
+    n = 21;
+    xs = linspace(11.4 - .5*11.4,11.4+.5*11.4,n);
+    xlabel("wind speed")
+
+    ys = allmeans(2,1:n);
+    ylabel("mean")
+
+    plot(xs,ys,Linewidth=2)
+    lgd = name + " mean vs wind speed ";
+    legend(lgd,Location="southwest")
+
+
+    % blade pitch 
+    subplot(8,2,9)
+
+    n = 41;
+    xs = linspace(-10,30,n);
+    xlabel("blade pitch")
+
+    ys = allmeans(3,1:n);
+    ylabel("mean")
+
+    plot(xs,ys,Linewidth=2)
+    lgd = name + " mean vs blade pitch ";
+    legend(lgd,Location="southwest")
+
+    % air desnsity
+    subplot(8,2,10)
+
+    n = 21;
+    xs = linspace(1225 - .1*1225,1225 + .1*1225,n);
+    xlabel("air density")
+
+    ys = allmeans(4,1:n);
+    ylabel("mean")
+
+    plot(xs,ys,Linewidth=2)
+    lgd = name + " mean vs air density ";
+    legend(lgd,Location="southwest")
+
+    % The same region on all the blades
+    subplot(8,2,[11, 12, 13, 14])
+    hold on
+    n = 9;
+    xs = linspace(0,1,n);
+
+    legs = cell(1,6);
+    for i = 1:6
+        ys = allmeans(6+i,1:n);
+        legs{1,i} = name + " mean vs Region " + num2str(i);
+        plot(xs,ys,Linewidth=2);
+    end
+    ylabel("mean")
+    xlabel("erosion level")
+    legend(legs,Location="southwest")
+
+    % The other 3 erosion tests
+    subplot(8,2,[15,16])
+    hold on
+    
+    n = 21;
+    xs = linspace(0,1,n);
+
+    lefs = cell(1,3);
+    ys = allmeans(5,1:n);
+    lefs{1,1} = name + " mean vs Uniform Er";
+    plot(xs,ys,Linewidth=2);
+
+    ys = allmeans(6,1:n);
+    lefs{1,2} = name + " mean vs OneBlade Er";
+    plot(xs,ys,Linewidth=2);
+
+    ys = allmeans(13,1:n);
+    lefs{1,3} = name + "mean vs Realistic Er";
+    plot(xs,ys,Linewidth=2);
+    
+    legend(lefs,Location="southwest")
+
+    ylabel("mean")
+    xlabel("erosion level")
+
+
+    prt = "OAT_Analysis" + "/" + "OUTPUT_" + name + "_MEANCARD"+".pdf";
+    
+    print(gcf,prt,"-dpdf")
+    status = "Completed successfully";
+end
