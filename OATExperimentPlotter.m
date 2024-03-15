@@ -98,6 +98,11 @@ xinfo = {{0,15,11},...
 number = 103;
 % specify the name of the variable
 subttl = "Blade 1 Region 1 Angle of Attack";
+% specify the statistic
+statname = "MEAN";
+% specify the stat_table name
+stattablename = "Experiment_means.txt";%Experiment_stds.txt,Experiment_f1.txt,Experiment_f2.txt
+
 
 
 experiments_names = {"WindDir","WindSpeed","BladePitch","AirDensity"};
@@ -114,17 +119,17 @@ for i = 1:4
     % Iterate Through the Experiments
     ExperimentID = "Data/"+experiments_names{1,i};
 
-    F1tableID = ExperimentID+"/Experiment_f1.txt";
+    tableID = ExperimentID+"/"+stattablename;
 
-    tableF1 = readtable(F1tableID,"ReadRowNames",true);
+    data_table = readtable(tableID,"ReadRowNames",true);
     
     % Read each line of the table.
-    names_of_rows = tableF1.Row;
+    names_of_rows = data_table.Row;
 
     xs{i} = linspace(xinfo{1,i}{1},xinfo{1,i}{2},xinfo{1,i}{3});
     
     
-    ys{i} = tableF1([string(names_of_rows(number))],:).Variables;
+    ys{i} = data_table([string(names_of_rows(number))],:).Variables;
     
     lmin = min(ys{i});
     lmax = max(ys{i});
@@ -155,7 +160,7 @@ for i = 1:4
 end
 
 
-prt = "F1" + num2str(number) + "_OAT.pdf";   
+prt = statname + names{number} + "_OAT.pdf";   
 print(gcf,prt,"-dpdf")
 
 %% Now make a different plot for the erosion effects
@@ -178,16 +183,16 @@ for i = 1:4
     % Iterate Through the Experiments
     ExperimentID = "Data/"+experiments_names{1,i};
 
-    F1tableID = ExperimentID+"/Experiment_f1.txt";
+    tableID = ExperimentID+"/"+statablename;
 
-    tableF1 = readtable(F1tableID,"ReadRowNames",true);
+    data_table = readtable(tableID,"ReadRowNames",true);
     
     % Read each line of the table.
-    names_of_rows = tableF1.Row;
+    names_of_rows = data_table.Row;
 
     xs{i} = linspace(xinfo{1},xinfo{2},xinfo{3});
     
-    ys{i} = tableF1([string(names_of_rows(number))],:).Variables;
+    ys{i} = data_table([string(names_of_rows(number))],:).Variables;
     
     lmin = min(ys{i});
     lmax = max(ys{i});
@@ -224,7 +229,7 @@ ylim([gmin,gmax])
 legend(lgd)
 
 
-prt = "Erosion_MEAN" + num2str(number) + "_OAT.pdf";   
+prt = "Erosion_" +statname+ names{number} + "_OAT.pdf";   
 print(gcf,prt,"-dpdf")
 
 
