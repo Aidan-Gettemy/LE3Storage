@@ -85,7 +85,7 @@ for k = 1:18
         % Now make the summary files
         SumID = ExperimentID + "/" + TestID + "/" +"Sensor_Data";
         tablename = "SensorDataT.txt";
-        status = create_sum_table(SumID,tablename,trans);
+        [status,len] = create_sum_table(SumID,tablename,trans);
 
         % Delete the .out files  
         oldfolder = cd(ExperimentID+"/"+TestID);
