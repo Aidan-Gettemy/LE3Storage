@@ -135,14 +135,14 @@ for i = 1:numel(data)
     proc = 0;
     while proc > 1
         try
-            status = create_sum_table(SumID,tablename,trans);
+            [status,len] = create_sum_table(SumID,tablename,trans);
             proc = 2;
-            datacheck(i,0) = trans; % for each data table we have saved, check if the experiment worked properly
+            datacheck(i) = len; % for each data table we have saved, check if the experiment worked properly
+            alphas(i) = trans;
         catch
             trans = .9*trans;
         end
     end
-    
     
     % Delete the .out files  
     oldfolder = cd(ExperimentID+"/"+TestID);
@@ -150,10 +150,25 @@ for i = 1:numel(data)
     delete *outb
     cd(oldfolder)
 
-    % Don't run this until all the summary tables are successful
+end
+for i =1:numel(datacheck)
+    ftext = "Test "+num2str(i)+" lasted "+num2str(datacheck(i)/160)+ " seconds with trans = " + num2str(alphas(i));
+    if datacheck(i)/160 < test_dur
+        disp("WARNING-TEST ENDED PREMATURELY")
+    end
+    disp(output)
+end
+%% Don't run this until all the summary tables are successfully made
+
+for i = 1:numel(data)
+    disp(data{i})
+    line = split(data{i},"/");
+    TestID = line{3};
     % Delete the data table
-    % oldfolder = cd(ExperimentID+"/"+TestID+ "/" +"Sensor_Data");
-    % delete SensorDataT.txt
-    % cd(oldfolder)
+    oldfolder = cd(ExperimentID+"/"+TestID+ "/" +"Sensor_Data");
+    delete SensorDataT.txt
+    cd(oldfolder)
+    message = "deleted table " + TestID;
+    disp(message)
 end
 
