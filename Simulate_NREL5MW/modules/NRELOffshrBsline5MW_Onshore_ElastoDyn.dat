@@ -25,12 +25,12 @@ False         PtfmYDOF    - Platform yaw rotation DOF (flag)
 ---------------------- INITIAL CONDITIONS --------------------------------------
           0   OoPDefl     - Initial out-of-plane blade-tip displacement (meters)
           0   IPDefl      - Initial in-plane blade-tip deflection (meters)
-          0.0000   BlPitch(1)  - Blade 1 initial pitch (degrees)
-          0.0000   BlPitch(2)  - Blade 2 initial pitch (degrees)
-          0.0000   BlPitch(3)  - Blade 3 initial pitch (degrees)
+          0   BlPitch(1)  - Blade 1 initial pitch (degrees)
+          0   BlPitch(2)  - Blade 2 initial pitch (degrees)
+          0   BlPitch(3)  - Blade 3 initial pitch (degrees) [unused for 2 blades]
           0   TeetDefl    - Initial or fixed teeter angle (degrees) [unused for 3 blades]
           0   Azimuth     - Initial azimuth angle for blade 1 (degrees)
-          3.0000   RotSpeed  - Initial or fixed rotor speed (rpm)
+          8   RotSpeed    - Initial or fixed rotor speed (rpm)
           0   NacYaw      - Initial or fixed nacelle-yaw angle (degrees)
           0   TTDspFA     - Initial fore-aft tower-top displacement (meters)
           0   TTDspSS     - Initial side-to-side tower-top displacement (meters)
@@ -115,8 +115,8 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
           1   DecFact     - Decimation factor for tabular output {1: output every time step} (-) (currently unused)
           0   NTwGages    - Number of tower nodes that have strain gages for output [0 to 9] (-)
          10,         19,         28    TwrGagNd    - List of tower nodes that have strain gages [1 to TwrNodes] (-) [unused if NTwGages=0]
-          0   NBlGages    - Number of blade nodes that have strain gages for output [0 to 9] (-)
-          3,          6,         9,      12,     15,     17    BldGagNd    - List of blade nodes that have strain gages [1 to BldNodes] (-) [unused if NBlGages=0]
+          6   NBlGages    - Number of blade nodes that have strain gages for output [0 to 9] (-)
+          17,          21,         26,      30,     34,     45    BldGagNd    - List of blade nodes that have strain gages [1 to BldNodes] (-) [unused if NBlGages=0]
               OutList     - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
 "BldPitch1"               - Blade 1 pitch angle
 "BldPitch2"               - Blade 2 pitch angle
@@ -203,6 +203,10 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 "HSShftV"               - Angular Speed of Highspeed shaft and Generator
 "RotPwr"                - Rotor power
 
+"TwrTpDxi"              - Tower-top/ yaw bearing fore-aft translational deflection including platform motions
+"TwrTpDyi"              - Tower-top/ yaw bearing side to side translational deflection including platform motions
+"TwrTpDzi"              - Tower-top/ yaw bearing axial translational deflection including platform motions
+
 "YawBrTDxt"             - Tower-top / yaw bearing fore-aft (translational) deflection(relative to the undeflected position)
 "YawBrTDyt"             -  Tower-top / yaw bearing side-to-side (translation) deflection(relative to the undeflected position)
 "YawBrTDzt"             -  Tower-top / yaw bearing axial (translational) deflection(relative to the undeflected position)
@@ -224,6 +228,137 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 "YawBrMxp"              - Side-to-side bending, fore-aft bending, and yaw moments at the top of the tower (not rotating with nacelle yaw)
 "YawBrMyp"              - Side-to-side bending, fore-aft bending, and yaw moments at the top of the tower (not rotating with nacelle yaw)
 "YawBrMzp"              - Side-to-side bending, fore-aft bending, and yaw moments at the top of the tower (not rotating with nacelle yaw)
+
+"Spn1MLxb1"
+"Spn1MLyb1"
+"Spn1MLzb1"
+"Spn1FLxb1"
+"Spn1FLyb1"
+"Spn1FLzb1"
+
+"Spn1MLxb2"
+"Spn1MLyb2"
+"Spn1MLzb2"
+"Spn1FLxb2"
+"Spn1FLyb2"
+"Spn1FLzb2"
+
+"Spn1MLxb3"
+"Spn1MLyb3"
+"Spn1MLzb3"
+"Spn1FLxb3"
+"Spn1FLyb3"
+"Spn1FLzb3"
+
+
+"Spn2MLxb1"
+"Spn2MLyb1"
+"Spn2MLzb1"
+"Spn2FLxb1"
+"Spn2FLyb1"
+"Spn2FLzb1"
+
+"Spn2MLxb2"
+"Spn2MLyb2"
+"Spn2MLzb2"
+"Spn2FLxb2"
+"Spn2FLyb2"
+"Spn2FLzb2"
+
+"Spn2MLxb3"
+"Spn2MLyb3"
+"Spn2MLzb3"
+"Spn2FLxb3"
+"Spn2FLyb3"
+"Spn2FLzb3"
+
+
+"Spn3MLxb1"
+"Spn3MLyb1"
+"Spn3MLzb1"
+"Spn3FLxb1"
+"Spn3FLyb1"
+"Spn3FLzb1"
+
+"Spn3MLxb2"
+"Spn3MLyb2"
+"Spn3MLzb2"
+"Spn3FLxb2"
+"Spn3FLyb2"
+"Spn3FLzb2"
+
+"Spn3MLxb3"
+"Spn3MLyb3"
+"Spn3MLzb3"
+"Spn3FLxb3"
+"Spn3FLyb3"
+"Spn3FLzb3"
+
+
+"Spn4MLxb1"
+"Spn4MLyb1"
+"Spn4MLzb1"
+"Spn4FLxb1"
+"Spn4FLyb1"
+"Spn4FLzb1"
+
+"Spn4MLxb2"
+"Spn4MLyb2"
+"Spn4MLzb2"
+"Spn4FLxb2"
+"Spn4FLyb2"
+"Spn4FLzb2"
+
+"Spn4MLxb3"
+"Spn4MLyb3"
+"Spn4MLzb3"
+"Spn4FLxb3"
+"Spn4FLyb3"
+"Spn4FLzb3"
+
+
+"Spn5MLxb1"
+"Spn5MLyb1"
+"Spn5MLzb1"
+"Spn5FLxb1"
+"Spn5FLyb1"
+"Spn5FLzb1"
+
+"Spn5MLxb2"
+"Spn5MLyb2"
+"Spn5MLzb2"
+"Spn5FLxb2"
+"Spn5FLyb2"
+"Spn5FLzb2"
+
+"Spn5MLxb3"
+"Spn5MLyb3"
+"Spn5MLzb3"
+"Spn5FLxb3"
+"Spn5FLyb3"
+"Spn5FLzb3"
+
+
+"Spn6MLxb1"
+"Spn6MLyb1"
+"Spn6MLzb1"
+"Spn6FLxb1"
+"Spn6FLyb1"
+"Spn6FLzb1"
+
+"Spn6MLxb2"
+"Spn6MLyb2"
+"Spn6MLzb2"
+"Spn6FLxb2"
+"Spn6FLyb2"
+"Spn6FLzb2"
+
+"Spn6MLxb3"
+"Spn6MLyb3"
+"Spn6MLzb3"
+"Spn6FLxb3"
+"Spn6FLyb3"
+"Spn6FLzb3"
 
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------- NODE OUTPUTS --------------------------------------------
