@@ -1,4 +1,4 @@
-function status = create_sum_table(directory,in_table,loc)
+function [status, length] = create_sum_table(directory,in_table,loc)
 %CREATE_SUM_TABLE go to the directory and make the summary table
 %   We will read the in table and save a table of the following form: 
 % Row names     mean        stardard deviation
@@ -18,6 +18,9 @@ function status = create_sum_table(directory,in_table,loc)
     for i = 1:numel(variablenames)
         x = Table(:,variablenames{i});
         x = x.Variables;
+        if i == 1
+            length = numel(x); % Add this for detection of errors
+        end
         trans = numel(x)-loc*(1/.00625);
         Means(1,i) = mean(x(trans:end));
         Stds(1,i) = std(x(trans:end));
