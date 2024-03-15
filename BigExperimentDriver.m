@@ -115,8 +115,10 @@ for i = 1:numel(M(:,1))
     disp(display)
 end
 %% Now make the summary tables etc.
+trans0 = ;% We will set the start of non-transitory behaviour to average over
 data = gather_up(StatusFileID);
 for i = 1:numel(data)
+    trans = trans0;%reset on each iteration
     disp(data{i})
     line = split(data{i},"/");
     TestID = line{3};
@@ -128,7 +130,19 @@ for i = 1:numel(data)
     % Now make the summary files
     SumID = ExperimentID + "/" + TestID + "/" +"Sensor_Data";
     tablename = "SensorDataT.txt";
-    status = create_sum_table(SumID,tablename,trans);
+    
+    % Make this part adaptive in case of test failure
+    proc = 0;
+    while proc > 1
+        try
+            status = create_sum_table(SumID,tablename,trans);
+            proc = 2;
+            datacheck(i,0) = trans; % for each data table we have saved, check if the experiment worked properly
+        catch
+            trans = .9*trans;
+        end
+    end
+    
     
     % Delete the .out files  
     oldfolder = cd(ExperimentID+"/"+TestID);
@@ -136,9 +150,10 @@ for i = 1:numel(data)
     delete *outb
     cd(oldfolder)
 
+    % Don't run this until all the summary tables are successful
     % Delete the data table
-    oldfolder = cd(ExperimentID+"/"+TestID+ "/" +"Sensor_Data");
-    delete SensorDataT.txt
-    cd(oldfolder)
+    % oldfolder = cd(ExperimentID+"/"+TestID+ "/" +"Sensor_Data");
+    % delete SensorDataT.txt
+    % cd(oldfolder)
 end
 
