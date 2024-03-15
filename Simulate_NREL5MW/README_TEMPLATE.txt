@@ -33,6 +33,6 @@ E5: x
 E6: x
 
 %————————————————————————%
-Simulation_time: 100
-Blade_pitch:
+Simulation_time: x
+Blade_pitch: x
 Turbine_Model: 5MW_Land_DLL_WTurb
