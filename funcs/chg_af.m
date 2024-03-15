@@ -17,9 +17,10 @@ function status = chg_af(readfile_ID,writefile_ID,bladex_vec)
             if numel(txt) == 1
                 break
             end
-            txt = "   " + txt{2} + "   ";
-            form_vector1 = [txt,"Cl",...
-                    "   ","Cd","   0.0000"];
+            txt1 = "   " + txt{2} + "   ";
+            txt2 = "   " + txt{5};
+            form_vector1 = [txt1,"Cl",...
+                    "   ","Cd",txt2];
             formats = {form_vector1,[0,1,0,1,0]};
             Cl_factor = 1 - .53*bladex_vec(readfile_ID{i}{2});% erosion def
             Cd_factor = 1 + 4*bladex_vec(readfile_ID{i}{2});% erosion def
