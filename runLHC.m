@@ -147,7 +147,7 @@ for i = 1:numel(data)
     
     % Make this part adaptive in case of test failure
     proc = 0;
-    while proc > 1
+    while proc < 1
         try
             [status,len] = create_sum_table(SumID,tablename,trans);
             proc = 2;
