@@ -1,11 +1,15 @@
 clc;close;clear;
 %% One at a Time Analysis Maker
 % Create every experiment table
-addpath funcs/
+addpath LE3Storage-main/funcs/
 
 experiments_names = {"WindDir","WindSpeed","BladePitch","AirDensity",...
     "ErosionBlade1Region1","ErosionBlade1Region2","ErosionBlade1Region3",...
-    "ErosionBlade1Region4"};
+    "ErosionBlade1Region4","ErosionBlade1Region5","ErosionBlade1Region6",...
+    "ErosionBlade2Region1","ErosionBlade2Region2","ErosionBlade2Region3",...
+    "ErosionBlade2Region4","ErosionBlade2Region5","ErosionBlade2Region6",...
+    "ErosionBlade3Region1","ErosionBlade3Region2","ErosionBlade3Region3",...
+    "ErosionBlade3Region4","ErosionBlade3Region5","ErosionBlade3Region6"};
 
 % cycle over all experiments
 for i = 1:numel(experiments_names)
@@ -39,10 +43,10 @@ for i = 1:numel(experiments_names)
     writetable(f2_table,output_ID,'WriteRowNames',true)
 end
 
-%% Next we can see plot outputs changes in mean etc
+%% Next we can see plot outputs changes in mean etc one at a time
 
-ExperimentID = "Data/WindDir";
-StatusID = "WindDir_Status.txt";
+ExperimentID = "Data/ErosionBlade1Region6";
+StatusID = "ErosionBlade1Region6_Status.txt";
 
 data = gather_up(StatusID);
 lib_datas = cell(1,numel(data));
@@ -58,6 +62,9 @@ names = load(nameID);
 names = names.Output_Names;
 st = plot_ts(names,tablez);
 %% Select groups of outputs to compare across tests
+line = split(ExperimentID,'/');
+testnm = line(2);
+
 ts1 = [1,1,1,1;2,3,4,5];
 ts2 = [1,1,1,1;9,10,11,157];
 ts3 = [1,1,1,1;103,121,136,92];
@@ -68,7 +75,7 @@ for i = 1:11
     for j = 1:3
         batches{1,1} = {readtable(lib_datas{1,i}),names,ts_set{1,j},plotstitle{j}};
         [f, rts] = plot_multi(batches);
-        sttl = "Wind Direction Test = " + num2str(i);
+        sttl = testnm + " " + num2str(i);
         subtitle(sttl)
         % Add a script to save the file to a database of plots:
         % save into the experiment folder into a database folder called
@@ -78,12 +85,18 @@ for i = 1:11
         savefig(f,saveID)
     end
 end
-%%
+%% Open Select plots
 openfig("figure_12.fig","visible")
 
-openfig("figure_62.fig","visible")
+openfig("figure_22.fig","visible")
 
-openfig("figure_112.fig","visible")
+openfig("figure_32.fig","visible")
+
+openfig("figure_42.fig","visible")
+
+openfig("figure_52.fig","visible")
+
+openfig("figure_62.fig","visible")
 
 %% Now to make the OAT table of plots
 % specify the start, stop, and number for the x axis for each experiment
@@ -91,18 +104,30 @@ xinfo = {{0,15,11},...
     {11.4*.5,11.4*1.5,11},...
     {-13,30,11},...
     {1.225*.9,1.225*1.1,11},...
-    {.5,1,11},...
-    {.5,1,11},{.5,1,11},{.5,1,11}};
+    };
 
 % specify the row number of the output
-number = 103;
+number = 157;
 % specify the name of the variable
-subttl = "Blade 1 Region 1 Angle of Attack";
+subttl = "Generator Power";
 % specify the statistic
-statname = "MEAN";
-% specify the stat_table name
-stattablename = "Experiment_means.txt";%Experiment_stds.txt,Experiment_f1.txt,Experiment_f2.txt
+statname = "SubDominantFreq";
 
+%
+%"DominantFreq"
+%"Mean"
+%"StandDev"
+
+
+% specify the stat_table name
+stattablename = "Experiment_f2.txt";
+%"Experiment_means.txt";
+%"Experiment_stds.txt";
+%"Experiment_f1.txt"
+%;
+
+
+savePlotID = "Plots_OAT_March16";
 
 
 experiments_names = {"WindDir","WindSpeed","BladePitch","AirDensity"};
@@ -112,7 +137,7 @@ inputnames = {"Wind Direction (deg)", "Wind Speed (m/s)",...
     "Blade Pitch (deg)", "Air Density (kg/_{m^3})"};
 
 f = figure;
-f.Position(1:4) = [100 100 700 1100];
+f.Position(1:4) = [100 100 600 800];
 gmax = 0;
 gmin = 100000;
 for i = 1:4
@@ -149,7 +174,7 @@ for i = 1:4
     scatter(xvals,yvals,70,'filled')
     xlabel(inputnames{i})
     ylabel(names{number})
-    ttl = "Output Dominant Frequency vs "+inputnames{i};
+    ttl = statname + " vs "+inputnames{i};
     title(ttl)
     subtitle(subttl)
     ax = gca;
@@ -160,30 +185,38 @@ for i = 1:4
 end
 
 
-prt = statname + names{number} + "_OAT.pdf";   
+prt = savePlotID + "/"+ statname + names{number}{1} + "_OAT.pdf";   
 print(gcf,prt,"-dpdf")
 
-%% Now make a different plot for the erosion effects
+% Now make a different plot for the erosion effects
 f = figure;
-f.Position(1:4) = [100 100 700 1100];
+f.Position(1:4) = [100 100 600 800];
 gmax = 0;
 gmin = 100000;
 
 experiments_names = {"ErosionBlade1Region1","ErosionBlade1Region2","ErosionBlade1Region3",...
-    "ErosionBlade1Region4"};
+    "ErosionBlade1Region4","ErosionBlade1Region5","ErosionBlade1Region6",...
+    "ErosionBlade2Region1","ErosionBlade2Region2","ErosionBlade2Region3",...
+    "ErosionBlade2Region4","ErosionBlade2Region5","ErosionBlade2Region6",...
+    "ErosionBlade3Region1","ErosionBlade3Region2","ErosionBlade3Region3",...
+    "ErosionBlade3Region4","ErosionBlade3Region5","ErosionBlade3Region6"};
 
 % specify names of varied inputs 
-inputnames = {"Blade1Erosion1",...
-    "Blade1Erosion2","Blade1Erosion3","Blade1Erosion4"};
+inputnames = {"ErosionBlade1Region1","ErosionBlade1Region2","ErosionBlade1Region3",...
+    "ErosionBlade1Region4","ErosionBlade1Region5","ErosionBlade1Region6",...
+    "ErosionBlade2Region1","ErosionBlade2Region2","ErosionBlade2Region3",...
+    "ErosionBlade2Region4","ErosionBlade2Region5","ErosionBlade2Region6",...
+    "ErosionBlade3Region1","ErosionBlade3Region2","ErosionBlade3Region3",...
+    "ErosionBlade3Region4","ErosionBlade3Region5","ErosionBlade3Region6"};
 
 % specify the linspace(a,b,c) of the inputs
 xinfo = {.5,1,11};
 
-for i = 1:4
+for i = 1:numel(inputnames)
     % Iterate Through the Experiments
     ExperimentID = "Data/"+experiments_names{1,i};
 
-    tableID = ExperimentID+"/"+statablename;
+    tableID = ExperimentID+"/"+stattablename;
 
     data_table = readtable(tableID,"ReadRowNames",true);
     
@@ -218,7 +251,7 @@ if gmin == gmax
 end
 xlabel("Erosion Level")
 ylabel(names{number})
-ttl = "Output Dominant Frequency vs Erosion Regions";
+ttl = statname+" vs Erosion Regions";
 title(ttl)
 subtitle(subttl)
 ax = gca;
@@ -227,9 +260,10 @@ ax.YGrid = "on";
 ax.FontSize = 16;
 ylim([gmin,gmax])
 legend(lgd)
+colororder(parula(i))
+legend(Location='bestoutside')
 
-
-prt = "Erosion_" +statname+ names{number} + "_OAT.pdf";   
+prt = savePlotID + "/"+"Erosion_" +statname+ names{number}{1} + "_OAT.pdf";   
 print(gcf,prt,"-dpdf")
 
 
