@@ -1,5 +1,5 @@
 clc;close;clear
-%% This will run the Big Jobs
+%% This will run the Latin Hyper Cube Jobs
 % We will engage the blade controller 
 
 % Link the helper function
