@@ -250,12 +250,13 @@ for i = 1:128%numel(data)
     cd(oldfolder)
 
 end
+%% Now we can see if the summary tables were made correctly
 for i =1:numel(datacheck)
     ftext = "Test "+num2str(i)+" lasted "+num2str(datacheck(i)/160)+ " seconds with trans = " + num2str(alphas(i));
     if datacheck(i)/160 < test_dur
         disp("WARNING-TEST ENDED PREMATURELY")
     end
-    disp(output)
+    disp(ftext)
 end
 %% Don't run this until all the summary tables are successfully made
 
