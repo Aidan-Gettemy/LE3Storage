@@ -40,7 +40,7 @@ SFTab = array2table(SUBFREQmat,"VariableNames",varnames);
 meantabID = "";
 stdtabID = "";
 f1tabID = "";
-f2tableID = "";
+f2tabID = "";
 writetable(MeanTab,meantabID);
 writetable(StdTab,stdtabID);
 writetable(DFTab,f1tabID);
