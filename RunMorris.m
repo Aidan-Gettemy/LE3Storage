@@ -223,8 +223,8 @@ for i = 1:numel(data)
     TestID = line{3};
     
     % Make big table
-    % test_out = ExperimentID + "/" + TestID + "/" + TestID + ".out";
-    % [test1outs,stat1] = create_mat_files(test_out);
+    test_out = ExperimentID + "/" + TestID + "/" + TestID + ".out";
+    [test1outs,stat1] = create_mat_files(test_out);
     
     % Now make the summary files
     SumID = ExperimentID + "/" + TestID + "/" +"Sensor_Data";
