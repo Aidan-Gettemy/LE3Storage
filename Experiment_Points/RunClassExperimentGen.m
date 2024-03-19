@@ -1,5 +1,5 @@
 clc;close;clear
-%% This will run the Latin Hyper Cube Jobs
+%% This will run the Class Experiment Jobs
 % We will engage the blade controller 
 
 % Link the helper function
