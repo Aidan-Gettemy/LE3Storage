@@ -6,14 +6,14 @@ clc;close;clear
 addpath funcs/
 
 % Make sure that we have the right test points to run
-M = readmatrix('');
+M = readmatrix('WvEtest1.txt');
 
 %%
 % ExperimentID: Where results will be held.
-ExperimentID = "Data/BigE2";
+ExperimentID = "Data/WvE1";
 
 % StatusFileID: This stores which tests have already run
-StatusFileID = "BigE2_Status.txt";
+StatusFileID = "WvE1_Status.txt";
 
 % This shows what each entry in the input vector holds
 
@@ -107,16 +107,16 @@ for i = restart:numel(M(:,1))
 end
 %% This will allow us to remake the statusfile
 % Link the helper function
-addpath funcs/
+addpath funcs\
 
 % Make sure that we have the right test points to run
-M = readmatrix('');
+M = readmatrix('data.txt');
 
 % ExperimentID: Where results will be held.
-ExperimentID = "Data/BigE2";
+ExperimentID = "Data/WvE1";
 
 % StatusFileID: This stores which tests have already run
-StatusFileID = "BigE2_Status.txt";
+StatusFileID = "WvE1_Status.txt";
 
 % We must set the test duration:
 test_dur = 240;
@@ -151,7 +151,7 @@ for i = restart:numel(M(:,1))
     vector(1,5:22)= run_point(1,4:21);% Erosion
 
     % Set up the test
-    TestID = remake_head();
+    TestID = remake_head(vector,i);
     
     % As we go, write down the result folder of each completed test to status file:
     if i==restart
@@ -177,7 +177,12 @@ end
 
 trans0 = 45;% We will set the start of non-transitory behaviour to average over
 
+% Make a directory to save some key data for plotting:
+mkdir(ExperimentID + "/TSData/")
+
 data = gather_up(StatusFileID);
+% Create a small data set of these time series for later plotting
+vector = [1,5,30,39,89,92,95,103:108,121:127,139:144,157];
 
 for i = 1:numel(data)
     trans = trans0;%reset on each iteration
@@ -189,10 +194,14 @@ for i = 1:numel(data)
     test_out = ExperimentID + "/" + TestID + "/" + TestID + ".out";
     [test1outs,stat1] = create_mat_files(test_out);
 
-    % Make the times series of the generator output
-    stat = save_genpwr_ts();
+   
     % Also, save some relevant time series.
-    stat = save_smalltab();
+    tabID = ExperimentID + "/" + TestID + "/" + "Sensor_Data/SensorDataT.txt";
+    savtabID = ExperimentID + "/TSData/"+TestID+"_table.txt";
+    stat = savesmalltbl(tabID,savtabID,vector);
+
+     % Make the times series of the generator output
+    stat = save_genpwr_ts(tabID,i,ExperimentID);
     
     % Now make the summary files
     SumID = ExperimentID + "/" + TestID + "/" +"Sensor_Data";
@@ -239,3 +248,6 @@ for i = 1:numel(data)
     message = "deleted table " + TestID;
     disp(message)
 end
+
+
+
