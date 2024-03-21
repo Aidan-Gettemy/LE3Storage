@@ -6,14 +6,14 @@ clc;close;clear
 addpath funcs/
 
 % Make sure that we have the right test points to run
-M = readmatrix('Experiment_Points\Erosion4Classes.txt');
+M = readmatrix('');
 
 %%
 % ExperimentID: Where results will be held.
-ExperimentID = "Data/4Class";
+ExperimentID = "Data/BigE2";
 
 % StatusFileID: This stores which tests have already run
-StatusFileID = "4Class_Status.txt";
+StatusFileID = "BigE2_Status.txt";
 
 % This shows what each entry in the input vector holds
 
@@ -62,7 +62,7 @@ for i = restart:numel(M(:,1))
                     0,0,0,0,0,0];
     run_point = M(i,:);
 
-    % translate each input into the relevant range (inputs are between 0 and 1)
+    % No need to translate each input into the relevant range, they are already set up
     vector(1,[1,2,4]) = run_point(1,1:3); % Wind and Air Dens
     vector(1,5:22)= run_point(1,4:21);% Erosion
 
@@ -110,18 +110,13 @@ end
 addpath funcs/
 
 % Make sure that we have the right test points to run
-M = readmatrix('Experiment_Points\Erosion4Classes.txt');
+M = readmatrix('');
 
 % ExperimentID: Where results will be held.
-ExperimentID = "Data/4Class";
+ExperimentID = "Data/BigE2";
 
 % StatusFileID: This stores which tests have already run
-StatusFileID = "4Class_Status.txt";
-
-% This shows what each entry in the input vector holds
-
-% Go ahead and make all the prep-folders and files
-status = mkdir(ExperimentID);
+StatusFileID = "BigE2_Status.txt";
 
 % We must set the test duration:
 test_dur = 240;
