@@ -151,9 +151,7 @@ for i = restart:numel(M(:,1))
     vector(1,5:22)= run_point(1,4:21);% Erosion
 
     % Set up the test
-    [status,TestID] = set_up(vector, i, "Template_NREL5MW",...
-    "Simulate_NREL5MW",test_dur,bld_fix);
-    
+    TestID = remake_head();
     
     % As we go, write down the result folder of each completed test to status file:
     if i==restart
@@ -176,8 +174,11 @@ for i = restart:numel(M(:,1))
 end
 
 %% Now make the summary tables etc.
+
 trans0 = 45;% We will set the start of non-transitory behaviour to average over
+
 data = gather_up(StatusFileID);
+
 for i = 1:numel(data)
     trans = trans0;%reset on each iteration
     disp(data{i})
@@ -187,6 +188,11 @@ for i = 1:numel(data)
     % Make big table
     test_out = ExperimentID + "/" + TestID + "/" + TestID + ".out";
     [test1outs,stat1] = create_mat_files(test_out);
+
+    % Make the times series of the generator output
+    stat = save_genpwr_ts();
+    % Also, save some relevant time series.
+    stat = save_smalltab();
     
     % Now make the summary files
     SumID = ExperimentID + "/" + TestID + "/" +"Sensor_Data";
