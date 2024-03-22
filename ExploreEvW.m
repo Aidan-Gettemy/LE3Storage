@@ -33,6 +33,7 @@ for i = 1:numel(selectTests)
     plot3(x,z',y,"LineWidth",2);
 end
 % Title
+grid on
 ttl = "Plot "+name+" vs Time vs Wind Speed";
 title(ttl)
 xlabel("Time (s)")
