@@ -30,11 +30,11 @@ for i = 1:numel(selectTests)
     x = TableNow.Time;
     y = TableNow(:,a).Variables;
     z = ones(1,numel(TableNow.Time))*(i-1)*2+3;
-    plot3(x,z',y);
+    plot3(x,z',y,"LineWidth",2);
 end
 % Title
 ttl = "Plot "+name+" vs Time vs Wind Speed";
 title(ttl)
 xlabel("Time (s)")
-ylabel(name)
-zlabel("Wind Speed (m/s)")
+ylabel("Wind Speed (m/s)")
+zlabel(name)
