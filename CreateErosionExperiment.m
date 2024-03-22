@@ -28,9 +28,9 @@ sets{6} = ([1:6,1:6,1:6]*1/6).^2;
 erlevel{1} = [1,2,3]*1/3;
 erlevel{2} = [1,2,3]*1/3;
 erlevel{3} = [1,2,3]*1/3;
-erlevel{4} = [.1,.2,.3,.4,.5,.6,.7,.8,.9,1];
-erlevel{5} = [.1,.2,.3,.4,.5,.6,.7,.8,.9,1];
-erlevel{6} = [.1,.2,.3,.4,.5,.6,.7,.8,.9,1];
+erlevel{4} = [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1];
+erlevel{5} = [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1];
+erlevel{6} = [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1];
 iter = 1;
 
 Design = zeros(1,21);
@@ -59,8 +59,8 @@ end
 %%
 % Now this is a big data set to try to run.  Let us start by picking an
 % experiment to actually run.
-% Let us try WindSpeed as the environmental variable, and let us pick
-% Erosion pattern Set4.1
+% For this experiment, we will pick the one region all blades, 4.1, and 4.3 patterns.  We will iterate through different erosion levels, 
+% and for each level, we will iterate through 10 wind speeds -- 400 tests.give to 4 computers for 1 hour
 
 % Run the code again but only on these inputs
 Design = zeros(1,21);
@@ -70,7 +70,7 @@ for i = 2 % wind speed
     % for each experiment
     % select the points
     chg = batches{i};
-    for j = 4 % Four.1
+    for j = [2,4,6] % Two and Four.1 and Four.3
         % for each test
         % select the set
         Testset = sets{j};
@@ -88,4 +88,4 @@ for i = 2 % wind speed
     end
 end
 
-save("WvEtest1.txt","Design","-ascii")
+save("WvEtest2.txt","Design","-ascii")
