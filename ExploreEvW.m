@@ -30,7 +30,7 @@ names = TableNow.Properties.VariableNames;
 c = 0; 
 % select an output to plot;
 a = 5; % Select Output Name
-b= 5; % (b-1)*2+3 =  Wind speed (b is between 1 and 10
+b= 3; % (b-1)*2+3 =  Wind speed (b is between 1 and 10
 
 
 if c == 0
@@ -89,6 +89,8 @@ zlabel(name)
 view(50,30)
 subttl = "Wind Speed = "+num2str((b-1)*2+3);
 subtitle(subttl)
+savnm = name+erosiontestname{d}+"wind"+num2str((b-1)*2+3)+"par_ts.png";
+saveas(gcf,savnm)
 % Also make a bar chart of the means:
 figure
 bar(zs,means)
@@ -100,5 +102,7 @@ ttlb = name + " Mean vs Erosion Level Test Bar Chart "+erosiontestname{d};
 title(ttlb)
 subttl = "Wind Speed = "+num2str((b-1)*2+3);
 subtitle(subttl)
+savnm = name+erosiontestname{d}+"wind"+num2str((b-1)*2+3)+"par_barch.png";
+saveas(gcf,savnm)
 %% Look at the experiment
 M = readmatrix("WvEtest2.txt");
