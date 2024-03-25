@@ -16,13 +16,51 @@ names = TableNow.Properties.VariableNames;
 % In this case, we Erosion is fixed for Testn -Test(n+10) then we advance
 % to the next erosion level.
 
-% First, for fixed wind speed, plot changing erosion
+% Fixed wind speed, plot changing erosion
+
+% c = 0: region1: selectTests=[180+b, [0:2]*10+b+c]; b is between 1,10
+% c = 30: region2:
+% c = 60: region3:
+% c = 90: region3:
+% c = 120: region3:
+% c = 150: region3:
+% c = 180: profile 1: selectTests = [0:10]*10+b+c; 
+% c = 290: profile 2
+
+c = 0; 
 % select an output to plot;
-a = 2; % Select Name
-b= 10; % Select Wind speed...
+a = 5; % Select Output Name
+b= 5; % (b-1)*2+3 =  Wind speed (b is between 1 and 10
+
+
+if c == 0
+    d = 1;
+elseif c == 30
+    d = 2;
+elseif c == 60
+    d = 3;
+elseif c == 90
+    d = 4;
+elseif c == 120
+    d = 5;
+elseif c == 150
+    d = 6;
+elseif c == 180
+    d = 7;
+else
+    d = 8;
+end
+
+%Erosion test name select 
+erosiontestname={"Region1","Region2","Region3","Region4","Region5",...
+    "Region6","Profile1","Profile2"};
+
 name = names{a};
-selectTests = [0:10]*10+b+290;%this is the region one test at 1/3,2/3,1 erosion
-% at the slow speed
+if c<180
+    selectTests=[180+b, [0:2]*10+b+c];
+else
+    selectTests = [0:10]*10+b+c;
+end
 f = figure(Visible="on");
 hold on
 for i = 1:numel(selectTests)
@@ -32,13 +70,17 @@ for i = 1:numel(selectTests)
     x = TableNow.Time;
     y = TableNow(:,a).Variables;
     means(i) = mean(y(end-45*160:end));
-    zs(i) = (i-1)*1/10;%(i-1)*2+3;
-    z = ones(1,numel(TableNow.Time))*((i-1)*1/10);
+    Z = numel(selectTests);
+    if Z < 10
+        Z = 3;
+    end
+    zs(i) = (i-1)*1/Z;
+    z = ones(1,numel(TableNow.Time))*(zs(i));
     plot3(x,z',y,"LineWidth",2);
 end
 grid on
 % Title
-ttl = "Plot "+name+" vs Time vs Wind Speed";
+ttl = "Plot "+name+" vs Time vs Wind Speed "+erosiontestname{d};
 title(ttl)
 xlabel("Time (s)")
 %ylabel("Wind Speed (m/s)")
@@ -49,13 +91,12 @@ subttl = "Wind Speed = "+num2str((b-1)*2+3);
 subtitle(subttl)
 % Also make a bar chart of the means:
 figure
-zs = [0:10]*1/10;
 bar(zs,means)
 %xlabel("Wind Speed m/s")
 xlabel("Erosion Level")
 ylab = name + " mean";
 ylabel(ylab)
-ttlb = name + " Mean vs Erosion Level Test Bar Chart";
+ttlb = name + " Mean vs Erosion Level Test Bar Chart "+erosiontestname{d};
 title(ttlb)
 subttl = "Wind Speed = "+num2str((b-1)*2+3);
 subtitle(subttl)
