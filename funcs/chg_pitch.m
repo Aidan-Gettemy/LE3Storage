@@ -28,7 +28,11 @@ function status = chg_pitch(readfile_ID,writefile_ID,inval,windspeed)
         "   RotSpeed  - Initial or fixed rotor speed (rpm)"];
     formats = {form_vector,[0,1,0]};
     columns = [1];
-    rt_speed_init = min(windspeed,12.1);
+    if windspeed <11.4
+        rt_speed_init = 6.96+0.03955*windspeed^2;
+    else
+        rt_speed_init = 12.1;
+    end
     edit_type = {{"replace",rt_speed_init}};
     data{33} = editor(formats,columns,edit_type,data{33},0);
 
