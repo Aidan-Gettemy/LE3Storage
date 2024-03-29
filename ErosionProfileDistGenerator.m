@@ -1,6 +1,6 @@
 design = zeros(1,18);
 for k = 1:1000
-    st(k) = wblrnd(.1,1.5);
+    st(k) = wblrnd(.075,1.5);
     for j = 1:3
         if j == 1
             design(k,1) = st(k);
@@ -14,6 +14,12 @@ for k = 1:1000
         else
             for i = 1:6
                 c = randn(1)*.125*(i/6)+design(k,i);
+                if design(k,i) == 1
+                    g = rand(1);
+                    if g < .75
+                        c = 1;
+                    end
+                end
                 if c<0;c=0.00;end
                 if c>1;c=1;end
                 design(k,(j-1)*6+i) = c;
@@ -23,7 +29,7 @@ for k = 1:1000
         
     end
 end
-for i = 1:40
+for i = 445:455
     figure
     bar(1:6,design(i,1:6),"yellow")
     hold on
@@ -37,7 +43,9 @@ function y = next_seg(y)
     r_n = rand(1);
     a = 6^(1/6);
     b = (1/6)^(1/6);
-    if r_n < .5
+    if r_n < .25
+        y = y;
+    elseif r_n < .5
         y = y*a;
     elseif r_n < .75
         y = y*2*a;
