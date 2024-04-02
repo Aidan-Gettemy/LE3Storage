@@ -5,7 +5,7 @@ clc;close;clear;
 % We added an additional function that we call after plugging in the run point
 % Thus it will automatically read the wind speed and set pitch to the right level
 
-windspeeds = [3:26,linspace(10,14,20)]
+windspeeds = [3:26,linspace(10,14,20),linspace(10,14,20)]
 
 erosion_profiles = {1/2*[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],...
     0*[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]};
