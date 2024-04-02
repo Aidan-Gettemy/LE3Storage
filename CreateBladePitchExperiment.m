@@ -28,7 +28,7 @@ for g = 1:2
             end
             Design(iter,5:end) = erosion_profiles{j};
             if g == 2
-                Design(iter,1) == 1;
+                Design(iter,1) = 1;
             end
             iter=iter+1;
         end
