@@ -11,5 +11,6 @@ function stat = init_rtspeed_sep(windspeed, template_directory,...
     rt_speed_init = fix_in_rt_speed(windspeed)-1;
     edit_type = {{"replace",rt_speed_init}};
     data{33} = editor(formats,columns,edit_type,data{33},0);
+    check = lay_down(data, writefile_ID);
     stat = "Fixed the initial rotor speed";
 end
