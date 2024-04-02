@@ -11,5 +11,6 @@ function status = save_genpwr_ts(tablewithgnpwrID, testnum, testfolder)
     
     prt = testfolder + "/" + "GenPwrvsTimeTest"+num2str(testnum)+".pdf";   
     print(f,prt,"-dpdf")
-    status = mean(y(end-30*160:end));
+    alpha = round(numel(y)/5)
+    status = mean(y(end-alpha:end));
 end
