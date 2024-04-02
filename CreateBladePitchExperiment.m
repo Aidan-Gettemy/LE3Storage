@@ -14,19 +14,24 @@ Design = zeros(1,22);
 noms = [0,11.4,0,1225];
 
 iter = 1;
-for j = 1:numel(erosion_profiles)
-    for i = 1:numel(windspeeds)
-        ws = windspeeds(i);
-        Design(iter,1:4) = noms;
-        Design(iter,[2]) = [ws];
-        if i > 24
-            Design(iter,[3]) = 1;
+for g = 1:2
+    for j = 1:numel(erosion_profiles)
+        for i = 1:numel(windspeeds)
+            ws = windspeeds(i);
+            Design(iter,1:4) = noms;
+            Design(iter,[2]) = [ws];
+            if i > 24
+                Design(iter,[3]) = 1;
+            end
+            if i > 24
+                Design(iter,[3]) = 2;
+            end
+            Design(iter,5:end) = erosion_profiles{j};
+            if g == 2
+                Design(iter,1) == 1;
+            end
+            iter=iter+1;
         end
-        if i > 24
-            Design(iter,[3]) = 2;
-        end
-        Design(iter,5:end) = erosion_profiles{j};
-        iter=iter+1;
     end
 end
 
