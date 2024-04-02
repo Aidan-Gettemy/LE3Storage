@@ -5,16 +5,10 @@ clc;close;clear;
 % We added an additional function that we call after plugging in the run point
 % Thus it will automatically read the wind speed and set pitch to the right level
 
-windspeeds = [3:26,linspace(10.5,13.5,10)]
+windspeeds = [3:26,linspace(10,14,20)]
 
-erosion_profiles = {1/4*[1,1,2,2,4,4,1,1,2,2,4,4,1,1,2,2,4,4],...
-    1/4*[1,1,2,2,4,4,1,1,2,2,4,4,1,1,2,2,4,4],...
-    0*[1,1,2,2,4,4,1,1,2,2,4,4,1,1,2,2,4,4],...
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],...
-    2/3*[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],...
-    1/2*[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],...
-    1/6*[1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6],...
-    1/12*[1,2,3,4,5,6,1,2,3,4,5,6,1,2,3,4,5,6]};
+erosion_profiles = {1/2*[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],...
+    0*[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]};
 
 Design = zeros(1,22);
 noms = [0,11.4,0,1225];
@@ -25,12 +19,15 @@ for j = 1:numel(erosion_profiles)
         ws = windspeeds(i);
         Design(iter,1:4) = noms;
         Design(iter,[2]) = [ws];
+        if i > 24
+            Design(iter,[3]) = 1;
+        end
         Design(iter,5:end) = erosion_profiles{j};
         iter=iter+1;
     end
 end
 
-save("BldptchvsWindSpeed.txt","Design","-ascii")
+save("BldptchvsWindSpeed3.txt","Design","-ascii")
 
 % Run the design points and then explore the resulting behaviour of the turbine
 % Did we fix all of the strange behaviour?
