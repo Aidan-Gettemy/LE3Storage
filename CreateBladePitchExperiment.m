@@ -22,6 +22,9 @@ for j = 1:numel(erosion_profiles)
         if i > 24
             Design(iter,[3]) = 1;
         end
+        if i > 24
+            Design(iter,[3]) = 2;
+        end
         Design(iter,5:end) = erosion_profiles{j};
         iter=iter+1;
     end
