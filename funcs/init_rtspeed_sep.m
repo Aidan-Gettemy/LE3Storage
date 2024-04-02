@@ -3,7 +3,7 @@ function stat = init_rtspeed_sep(windspeed, template_directory,...
     
     readfile_ID = template_directory + "/modules/NRELOffshrBsline5MW_Onshore_ElastoDyn.dat";
     writefile_ID = simulation_directory + "/modules/NRELOffshrBsline5MW_Onshore_ElastoDyn.dat";
-
+    data = gather_up(readfile_ID);
     form_vector = ["          ","entry_one",...
         "   RotSpeed  - Initial or fixed rotor speed (rpm)"];
     formats = {form_vector,[0,1,0]};
