@@ -1,4 +1,4 @@
 function pitch = fix_init_bldptch(windspeed)
-  a = [8.0206e-06	-0.0011	0.0585	-1.7942	32.7361	-355.5472	2.1315e+03	-5.4479e+03];
+  a = [0.0002	-0.0165	0.6367	-12.2414	118.6335	-458.0461];
   pitch=max(polyval(a,windspeed),0);
 end
