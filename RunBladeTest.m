@@ -29,13 +29,13 @@ StatusFileID = "BladePitchTest3_Status.txt";
 status = mkdir(ExperimentID);
 
 % We must set the test duration:
-test_dur = 240;
+test_dur = 100;
 
 % blade pitch control (0=off, 1=on)
 bld_fix = 1;
 
 % we average last seconds
-trans = 45;
+trans = 30;
 
 
 % Run the Simulations
@@ -70,6 +70,12 @@ for i = restart:numel(M(:,1))
         vector(1,3) = fix_init_bldptch(run_point(1,2))-.5; % Fix the blade pitch according to stable point for given wind speed
     else
         vector(1,3) = fix_init_bldptch(run_point(1,2)); % Fix the blade pitch according to stable point for given wind speed
+    end
+
+    if run_point(1,1) == 1
+        run_point(1,1) = 0;
+        stat = init_rtspeed_sep(windspeed,"Template_NREL5MW",...
+    "Simulate_NREL5MW");
     end
     
     
@@ -127,13 +133,13 @@ ExperimentID = "Data/BladePitchTest";
 StatusFileID = "BladePitchTest_Status.txt";
 
 % We must set the test duration:
-test_dur = 240;
+test_dur = 100;
 
 % blade pitch control (0=off, 1=on)
 bld_fix = 1;
 
 % we average last seconds
-trans = 45;
+trans = 30;
 
 restart = 1;
 
@@ -182,7 +188,7 @@ end
 
 %% Now make the summary tables etc.
 
-trans0 = 45;% We will set the start of non-transitory behaviour to average over
+trans0 = 30;% We will set the start of non-transitory behaviour to average over
 
 % Make a directory to save some key data for plotting:
 mkdir(ExperimentID + "/TSData/")
