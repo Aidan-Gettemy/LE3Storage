@@ -64,7 +64,14 @@ for i = restart:numel(M(:,1))
 
     % No need to translate each input into the relevant range, they are already set up
     vector(1,1:22) = run_point(1,1:22);
-    vector(1,3) = fix_init_bldptch(run_point(1,2)); % Fix the blade pitch according to stable point for given wind speed
+    if run_point(1,3) == 1
+        vector(1,3) = fix_init_bldptch(run_point(1,2))+.5; % Fix the blade pitch according to stable point for given wind speed
+    elseif run_point(1,3) == 2
+        vector(1,3) = fix_init_bldptch(run_point(1,2))-.5; % Fix the blade pitch according to stable point for given wind speed
+    else
+        vector(1,3) = fix_init_bldptch(run_point(1,2)); % Fix the blade pitch according to stable point for given wind speed
+    end
+    
     
 
     % Set up the test
