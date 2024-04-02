@@ -4,10 +4,11 @@ function rtspeed = fix_in_rt_speed(windspeed)
   c = [0.0012	-0.0234	12.1697];
   if windspeed<10.25
     rtspeed = polyval(a,windspeed);
-  elseif windspeed<11.4
-    rtspeed = polyval(b,windspeed);
-  else
-    rtspeed = polyval(c,windspeed);
+  else 
+      if windspeed<11.4
+        rtspeed = polyval(b,windspeed);
+      else
+        rtspeed = polyval(c,windspeed);
+      end
   end
-  
 end
