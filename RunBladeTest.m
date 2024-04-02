@@ -10,10 +10,10 @@ M = readmatrix('');
 
 %%
 % ExperimentID: Where results will be held.
-ExperimentID = "Data/BladePitchTest";
+ExperimentID = "Data/BladePitchTest3";
 
 % StatusFileID: This stores which tests have already run
-StatusFileID = "BladePitchTest_Status.txt";
+StatusFileID = "BladePitchTest3_Status.txt";
 
 % This shows what each entry in the input vector holds
 
