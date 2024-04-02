@@ -6,7 +6,7 @@ clc;close;clear
 addpath funcs/
 
 % Make sure that we have the right test points to run
-M = readmatrix('');
+M = readmatrix('BldptchvsWindSpeed3.txt');
 
 %%
 % ExperimentID: Where results will be held.
@@ -73,7 +73,7 @@ for i = restart:numel(M(:,1))
     end
 
     if run_point(1,1) == 1
-        run_point(1,1) = 0;
+        vector(1,1) = 0;
         stat = init_rtspeed_sep(windspeed,"Template_NREL5MW",...
     "Simulate_NREL5MW");
     end
