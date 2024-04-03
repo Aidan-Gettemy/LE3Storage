@@ -254,5 +254,4 @@ for i = 1:numel(data)
     message = "deleted table " + TestID;
     disp(message)
 end
-    disp(message)
-end
+
