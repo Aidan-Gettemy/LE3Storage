@@ -64,7 +64,7 @@ for i = restart:numel(M(:,1))
 
     % No need to translate each input into the relevant range, they are already set up
     vector(1,1:22) = run_point(1,1:22);
-    vector(1,3) = fix_init_bldptch(run_point(1,2));
+    % vector(1,3) = fix_init_bldptch(run_point(1,2)); also fixed for test 7
     
     
     % Set up the test
