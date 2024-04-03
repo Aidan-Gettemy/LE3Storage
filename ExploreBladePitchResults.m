@@ -1,7 +1,7 @@
 clc;close;clear;
 % This plots the results from the experiments with wind and erosion 
 addpath funcs/
-data = gather_up("");
+data = gather_up("BladePitchTest6_Status.txt");
 
 Idtab = split(data{10},"/");
 tableID = Idtab{1}+"/"+Idtab{2}+"/"+"TSData"+"/"+Idtab{3}+"_table.txt";
@@ -9,7 +9,6 @@ tableID = Idtab{1}+"/"+Idtab{2}+"/"+"TSData"+"/"+Idtab{3}+"_table.txt";
 TableNow = readtable(tableID);
 names = TableNow.Properties.VariableNames;
 %%
-
 % We can compare the experiment design matrix to recall how to read the
 % tests
 
@@ -20,9 +19,9 @@ names = TableNow.Properties.VariableNames;
 
 % First, for fixed Erosion, plot the changing wind speeds.
 % select an output to plot;
-a = 21;
+a = 7;
 name = names{a};
-selectTests = [1,11,21];
+selectTests = 1:24;
 f = figure(Visible="on");
 hold on
 for i = 1:numel(selectTests)
@@ -31,7 +30,9 @@ for i = 1:numel(selectTests)
     TableNow = readtable(tableID);
     x = TableNow.Time;
     y = TableNow(:,a).Variables;
-    z = ones(1,numel(TableNow.Time))*((i-1)*2+3);
+    z = ones(1,numel(TableNow.Time))*(i-1)*2/23+11;
+    zs(i) = (i-1)*2/23+11;
+    means(i) = mean(y(end-.1*160:end));
     plot3(x,z',y,"LineWidth",2);
 end
 grid on
@@ -41,5 +42,24 @@ title(ttl)
 xlabel("Time (s)")
 ylabel("Wind Speed (m/s)")
 zlabel(name)
+
+view(45,29)
+
+% Also make a bar chart of the means:
+figure
+bar(zs,means)
+xlabel("Wind Speed m/s")
+%xlabel("Erosion Level")
+ylab = name + " mean";
+ylabel(ylab)
+ttlb = name + " Mean vs Blade Test";
+title(ttlb)
 %%
-M = readmatrix("");
+a=7;i=6;
+figure
+Idtab = split(data{selectTests(i)},"/");
+tableID = Idtab{1}+"/"+Idtab{2}+"/"+"TSData"+"/"+Idtab{3}+"_table.txt";
+TableNow = readtable(tableID);
+x = TableNow.Time;
+y = TableNow(:,a).Variables;
+plot(x,y)
