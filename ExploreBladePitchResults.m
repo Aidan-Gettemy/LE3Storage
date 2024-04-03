@@ -1,7 +1,7 @@
 clc;close;clear;
 % This plots the results from the experiments with wind and erosion 
 addpath funcs/
-data = gather_up("BladePitchTest6_Status.txt");
+data = gather_up("BladePitchTest11_Status.txt");
 
 Idtab = split(data{10},"/");
 tableID = Idtab{1}+"/"+Idtab{2}+"/"+"TSData"+"/"+Idtab{3}+"_table.txt";
@@ -19,10 +19,13 @@ names = TableNow.Properties.VariableNames;
 
 % First, for fixed Erosion, plot the changing wind speeds.
 % select an output to plot;
-a = 7;
+
+a = 27;
 name = names{a};
-selectTests = 1:24;
+selectTests = 22:42;
 f = figure(Visible="on");
+zs = zeros(1,numel(selectTests));
+means = zeros(1,numel(selectTests));
 hold on
 for i = 1:numel(selectTests)
     Idtab = split(data{selectTests(i)},"/");
@@ -30,8 +33,8 @@ for i = 1:numel(selectTests)
     TableNow = readtable(tableID);
     x = TableNow.Time;
     y = TableNow(:,a).Variables;
-    z = ones(1,numel(TableNow.Time))*(i-1)*2/23+11;
-    zs(i) = (i-1)*2/23+11;
+    z = ones(1,numel(TableNow.Time))*(i-1)*23/40+3;
+    zs(i) = (i-1)*23/40+3;
     means(i) = mean(y(end-.1*160:end));
     plot3(x,z',y,"LineWidth",2);
 end
@@ -54,6 +57,8 @@ ylab = name + " mean";
 ylabel(ylab)
 ttlb = name + " Mean vs Blade Test";
 title(ttlb)
+
+
 %%
 a=7;i=6;
 figure

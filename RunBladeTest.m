@@ -6,14 +6,14 @@ clc;close;clear
 addpath funcs/
 
 % Make sure that we have the right test points to run
-M = readmatrix('BldptchvsWindSpeed7.txt');
+M = readmatrix('BldptchvsWindSpeed11.txt');
 
 %%
 % ExperimentID: Where results will be held.
-ExperimentID = "Data/BladePitchTest7";
+ExperimentID = "Data/BladePitchTest11";
 
 % StatusFileID: This stores which tests have already run
-StatusFileID = "BladePitchTest7_Status.txt";
+StatusFileID = "BladePitchTest11_Status.txt";
 
 % This shows what each entry in the input vector holds
 
@@ -29,7 +29,7 @@ StatusFileID = "BladePitchTest7_Status.txt";
 status = mkdir(ExperimentID);
 
 % We must set the test duration:
-test_dur = 15;
+test_dur = 45;
 
 % blade pitch control (0=off, 1=on)
 bld_fix = 1;
@@ -64,7 +64,7 @@ for i = restart:numel(M(:,1))
 
     % No need to translate each input into the relevant range, they are already set up
     vector(1,1:22) = run_point(1,1:22);
-    % vector(1,3) = fix_init_bldptch(run_point(1,2)); also fixed for test 7
+    vector(1,3) = fix_init_bldptch(run_point(1,2)); 
     
     
     % Set up the test
@@ -254,4 +254,5 @@ for i = 1:numel(data)
     message = "deleted table " + TestID;
     disp(message)
 end
+
 
