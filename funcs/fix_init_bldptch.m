@@ -1,4 +1,5 @@
 function pitch = fix_init_bldptch(windspeed)
-  a = [0.000169412967502565,-0.0164757597074355,0.636677668758266,-12.2414399351796,118.6335412432,-458.046087079639];
-  pitch=max(polyval(a,windspeed),0);
+  y = readmatrix("bldptchpoints.txt");
+  x = 3:26;
+  pitch = spline(x,y,windspeed);
 end
