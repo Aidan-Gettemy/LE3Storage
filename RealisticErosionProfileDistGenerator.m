@@ -180,7 +180,7 @@ end
 save("LifeCylceErosionClasses.txt","M","-ascii")
 %% Check if the data-set we made looks right
 
-M = readmatrix("LifeCylceErosionClasses.txt");
+M = readmatrix("LifeCycleErosionClasses.txt");
 
 for i = 1:40
     figure
