@@ -1,4 +1,4 @@
-clc;close;clear
+clc;close all;clear
 % We can use a Gamma distribution to represent the probability of erosion
 % reaching a certain extent in a given blade regioon 
 % n years after the turbine begins operation
@@ -128,9 +128,9 @@ dim = 3;
 
 % number of test points:
 % Select the number of years to simulate
-years = 20;
+years = 17;
 % Select the number of samples per year
-sampls = 2;
+sampls = 100;
 % Number of rows needed
 num = years*sampls;
 
@@ -172,17 +172,17 @@ for i =1:numel(X(:,1))
 
     % Check if we advance to the next year
     if mod(i,sampls) == 0
-        yrs = yrs+1;
+        yrs = yrs+1.5;
     end
 
 end
 
-save("LifeCylceErosionClasses.txt","M","-ascii")
+save("LifeCycleErosionClasses.txt","M","-ascii")
 %% Check if the data-set we made looks right
 
 M = readmatrix("LifeCycleErosionClasses.txt");
 
-for i = 1:40
+for i = 1499:1500
     figure
     hold on
     bar(1,(1/25)*M(i,1),"black")
@@ -198,4 +198,9 @@ for i = 1:40
     ylim([0,1])
     title("Year" + num2str(M(i,22)))
 end
+%%
+close all;
+
+image(M(:,4:21),'CDataMapping','scaled')
+colorbar
 
