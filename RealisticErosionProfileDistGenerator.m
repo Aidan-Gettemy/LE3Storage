@@ -126,6 +126,8 @@ end
 % input space dimension: # environmental inputs
 dim = 3;
 
+rng("default")  % Set the random seed for reproducibility
+
 % number of test points:
 % Select the number of years to simulate
 years = 17;
