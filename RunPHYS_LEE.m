@@ -3,11 +3,11 @@ clc;close;clear
 % Link the helper function
 addpath funcs/
 % Make sure that we have the right test points to run
-M = readmatrix('');
+M = readmatrix('LifeCycleErosionClasses_Test3.txt');
 
 %% Simulation Parameters
 % JobsNums: Set the first to last rows to execute from M
-JobsNums = [1, 100];
+JobsNums = [1, 34];
 
 % Test duration:
 test_dur = 120;
