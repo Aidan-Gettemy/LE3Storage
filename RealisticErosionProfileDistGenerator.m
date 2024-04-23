@@ -203,7 +203,20 @@ for i = 16:17
 end
 %%
 close all;
-
+close all;
+figure
 image(M(:,4:21),'CDataMapping','scaled')
+colorbar
+figure
+image(M(:,1),'CDataMapping','scaled')
+colorbar
+figure
+image(M(:,2),'CDataMapping','scaled')
+colorbar
+figure
+image(M(:,3),'CDataMapping','scaled')
+colorbar
+figure
+image(M(:,22),'CDataMapping','scaled')
 colorbar
 
