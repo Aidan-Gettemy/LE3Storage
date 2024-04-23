@@ -1,7 +1,7 @@
 clc;close;clear;
 % This plots the results from the experiments with wind and erosion 
 addpath funcs/
-data = gather_up("_Status.txt");
+data = gather_up("LEE_ERD1_34_Status.txt");
 
 Idtab = split(data{10},"/");
 tableID = Idtab{1}+"/"+Idtab{2}+"/"+"TSData"+"/"+Idtab{3}+"_table.txt";
@@ -12,9 +12,9 @@ names = TableNow.Properties.VariableNames;
 % We can compare the experiment design matrix to recall how to read the
 % tests
 
-a = 27;
+a = 3;
 name = names{a};
-selectTests = ;
+selectTests = 1:34;
 f = figure(Visible="on");
 zs = zeros(1,numel(selectTests));
 means = zeros(1,numel(selectTests));
@@ -25,17 +25,17 @@ for i = 1:numel(selectTests)
     TableNow = readtable(tableID);
     x = TableNow.Time;
     y = TableNow(:,a).Variables;
-    z = ones(1,numel(TableNow.Time))*(i-1)*23/40+3;
-    zs(i) = (i-1)*23/40+3;
-    means(i) = mean(y(end-.1*160:end));
+    z = ones(1,numel(TableNow.Time))*i;
+    zs(i) = (i);
+    means(i) = mean(y(end-.2*120:end));
     plot3(x,z',y,"LineWidth",2);
 end
 grid on
 % Title
-ttl = "Plot "+name+" ";
+ttl = "Plot "+name+" vs Time vs Test #";
 title(ttl)
 xlabel("Time (s)")
-ylabel("")
+ylabel("Test #")
 zlabel(name)
 
 view(45,29)
@@ -47,8 +47,10 @@ xlabel(" m/s")
 %xlabel("Erosion Level")
 ylab = name + " mean";
 ylabel(ylab)
-ttlb = name + " Mean vs ";
+ttlb = name + " Mean vs Test#";
 title(ttlb)
+
+
 
 
 %%
