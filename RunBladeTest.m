@@ -212,6 +212,7 @@ for i = 1:numel(data)
     while proc < 1
         try
             [status,len] = create_sum_table(SumID,tablename,trans);
+            disp(num2str(i)+ " " + status);
             proc = 2;
             datacheck(i) = len; % for each data table we have saved, check if the experiment worked properly
             alphas(i) = trans;
