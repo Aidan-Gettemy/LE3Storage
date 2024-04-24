@@ -4,6 +4,27 @@ clc;close;clear
 addpath funcs/
 % Make sure that we have the right test points to run
 M = readmatrix('LifeCycleErosionClasses_Test3.txt');
+close all;
+figure
+image(M(:,4:21),'CDataMapping','scaled')
+colorbar
+title("Blade Erosion Profiles")
+figure
+image(M(:,1),'CDataMapping','scaled')
+colorbar
+title("Direction")
+figure
+image(M(:,2),'CDataMapping','scaled')
+colorbar
+title("Speed")
+figure
+image(M(:,3),'CDataMapping','scaled')
+colorbar
+title("Air Density")
+figure
+image(M(:,22),'CDataMapping','scaled')
+colorbar
+title("Classes (Age 0-24 yrs)")
 
 %% Simulation Parameters
 % JobsNums: Set the first to last rows to execute from M
