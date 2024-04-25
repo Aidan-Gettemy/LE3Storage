@@ -1,13 +1,15 @@
 clc;close;clear;
 addpath funcs/
-
+addpath StatusFiles\
 %% First, we will make one table of all of the output statistics
 
-StatusFileIDs = {'LEE_ERD1_25_Status.txt'};
+StatusFileIDs = {};
+ranges = ["1_100","101_200","201_300","301_500","501_600","601_900",...
+    "901_1150","1151_1400","1401_1550","1551_1700"];
+for i = 1:length(ranges)
+    StatusFileIDs{i} = "StatusFiles/LEE_ERD"+ranges(i)+"_Status.txt";
+end
 
-
-a = 1*ones(2);b = 2*ones(2);c = 3*ones(2);
-g = cat(2,cat(2,a,b),c);
 %%
 bigData = {};
 for j = 1:numel(StatusFileIDs)
