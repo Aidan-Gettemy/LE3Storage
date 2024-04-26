@@ -53,6 +53,25 @@ for i = 1:numel(OutNames)
     mseTest(i) = sum((Out_predict_test - Out_test(:,1).Variables).^2)/length(Out_predict_test);
     
     % Save the Scatter Plot
+    figure
+    plot(Out_train(:,i).Variables,Out_train(:,i).Variables,'LineWidth',10)
+    hold on
+    scatter(Out_train(:,i).Variables,Out_predict_train,20,'og','filled')
+    scatter(Out_test(:,i).Variables,Out_predict_test,20,'or','filled')
+    hold off
+    grid on
+    legend_text = {...
+        ['1:1'],...
+        ['Training Data (R ' num2str(R_tr(1,i)) ')'],...
+        ['Testing Data (R ' num2str(R_te(1,i)) ')']};
+    legend(legend_text,'Location','southeast','FontSize',15);
+    xlabel("Actual " + OutName,FontSize=20)
+    ylabel("Estimated "+OutName,FontSize=20)
+    title("Scatter Diagram for "+OutName, 'FontSize',25);
+    set(gca,'FontSize',16);
+    set(gca,'LineWidth',2);
+    saveID = plotID+OutName+"scatter.png";
+    print('-dpng',saveID)
     % Save the predictor importances
     % Save the predictor barchart
 end
@@ -92,3 +111,4 @@ for i=1:20%length(Mdl.PredictorNames)
         'FontSize',14 ...
     )
 end
+
