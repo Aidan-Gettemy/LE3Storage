@@ -5,8 +5,8 @@ plotID = "Plots/";
 mkdir Plots
 %% Load in Data Inputs and Outputs 
 
-IntableID = "../InTable_Train_1700.txt";
-OuttableID = "../OutTable_Train_1700.txt";
+IntableID = "../InTable_All_1700.txt";
+OuttableID = "../OutTable_All_1700.txt";
 
 In = readtable(IntableID);
 Out_all = readtable(OuttableID);
