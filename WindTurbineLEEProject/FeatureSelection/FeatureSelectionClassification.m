@@ -24,8 +24,8 @@ In_test = In(test(cvpart),:);
 Out_test = Out(test(cvpart),:);
 
 % Normalize the Data
-[In_train_scale,Ctrain,Strain] = normalize(In_train);
-In_test_scale = normalize(In_test,"center",Ctrain,"scale",Strain);
+%[In_train_scale,Ctrain,Strain] = normalize(In_train);
+%In_test_scale = normalize(In_test,"center",Ctrain,"scale",Strain);
 
 InNames = In.Properties.VariableNames;
 OutName = 'ErosionClass';
@@ -34,7 +34,7 @@ OutName = 'ErosionClass';
 writetable(Ctrain,"Center_Table.txt")
 writetable(Strain,"Scale_Table.txt")
 %% Set up the Model/Train the Model
-Mdl = fitcensemble(In_train_scale,Out_train,...
+Mdl = fitcensemble(In_train,Out_train,...
     'PredictorNames',InNames,...
     'ResponseName',OutName,...
     'OptimizeHyperparameters',{'NumLearningCycles','MaxNumSplits','LearnRate'}, ...
@@ -45,7 +45,7 @@ Mdl = fitcensemble(In_train_scale,Out_train,...
 save("RF_class.mat",'Mdl');
 %% Evaluate the Model and save the stats
 
-Out_predict = Mdl.predict(In_test_scale);
+Out_predict = Mdl.predict(In_test);
 
 %% Plot and Save as .png files
 figure
@@ -81,7 +81,7 @@ for i=1:20%length(Mdl.PredictorNames)
     )
 end
 
-print('-dpng',plotID+"input_importance_class.png")
+print('-dpng',plotID+"Classification_input_importance_class.png")
 %% Try again on the smaller dataset
 
 Mdl = fitcensemble(In_train(:,isorted_imp(1:20)),Out_train,...
