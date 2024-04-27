@@ -28,11 +28,11 @@ InNames = In_train.Properties.VariableNames;
 OutName = "ErosionAgeClass";
 
 % Now, assemble a matrix of the selected predictors for each output
-%predimpID = "../../FeatureSelection/.txt";
-%Importances=readmatrix(predimpID); (:,Importances(i,1:20))
+predimpID = "../../FeatureSelection/Classification_imp.txt";
+Importances=readmatrix(predimpID);
 
 %% Set up the Model/Train the Model
-Mdl = fitctree(In_train,Out_train,...
+Mdl = fitctree(In_train(:,Importances(1:20)),Out_train,...
     'OptimizeHyperparameters','auto',...
     'HyperparameterOptimizationOptions',struct('AcquisitionFunctionName',...
     'expected-improvement-plus'));
