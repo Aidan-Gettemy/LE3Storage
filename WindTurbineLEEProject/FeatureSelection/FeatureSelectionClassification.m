@@ -64,7 +64,7 @@ figure;
 barh(imp(isorted_imp(1:20)));hold on;grid on;
 barh(imp(isorted_imp(1:5)),'y');
 barh(imp(isorted_imp(1:3)),'r');
-title('Predictor Importance Estimates');
+title('Predictor Importance Classification');
 xlabel('Estimates with Curvature Tests');ylabel('Predictors');
 set(gca,'FontSize',20);
 set(gca,'TickDir','out');
