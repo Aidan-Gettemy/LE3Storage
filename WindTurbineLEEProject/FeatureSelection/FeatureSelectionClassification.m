@@ -58,7 +58,7 @@ print('-dpng',plotID+"confusion_class.png")
 imp = predictorImportance(Mdl);
 [sorted_imp,isorted_imp] = sort(imp,'descend');
 % isorted_imp has the index of the important predictors.  Save this
-writematrix(isorted_imp,"ranked_pred_imp.txt")
+writematrix(isorted_imp,"Classification_ranked_pred_imp.txt")
 
 figure;
 barh(imp(isorted_imp(1:20)));hold on;grid on;
