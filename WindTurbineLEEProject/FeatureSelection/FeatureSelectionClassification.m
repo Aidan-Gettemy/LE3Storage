@@ -29,10 +29,6 @@ Out_test = Out(test(cvpart),:);
 
 InNames = In.Properties.VariableNames;
 OutName = 'ErosionClass';
-
-% save the scaling parameters
-writetable(Ctrain,"Center_Table.txt")
-writetable(Strain,"Scale_Table.txt")
 %% Set up the Model/Train the Model
 Mdl = fitcensemble(In_train,Out_train,...
     'PredictorNames',InNames,...
@@ -42,15 +38,16 @@ Mdl = fitcensemble(In_train,Out_train,...
     'AcquisitionFunctionName','expected-improvement-plus')...
    );
 %% Save the Model
-save("RF_class.mat",'Mdl');
+%save("RF_class.mat",'Mdl');
+Mdl = load("RF_class.mat");
 %% Evaluate the Model and save the stats
-
+Mdl = Mdl.Mdl;
 Out_predict = Mdl.predict(In_test);
 
 %% Plot and Save as .png files
 figure
 cm = confusionchart(Out_test,Out_predict);
-cm.Title = 'Erosion Class Detection: RandomForest';
+cm.Title = 'RandF: Classification';
 cm.FontSize = 20;
 print('-dpng',plotID+"confusion_class.png")
 
@@ -58,7 +55,7 @@ print('-dpng',plotID+"confusion_class.png")
 imp = predictorImportance(Mdl);
 [sorted_imp,isorted_imp] = sort(imp,'descend');
 % isorted_imp has the index of the important predictors.  Save this
-writematrix(isorted_imp,"Classification_ranked_pred_imp.txt")
+writematrix(isorted_imp,"Classification_imp.txt")
 
 figure;
 barh(imp(isorted_imp(1:20)));hold on;grid on;
@@ -70,7 +67,7 @@ set(gca,'FontSize',20);
 set(gca,'TickDir','out');
 set(gca,'LineWidth',2);
 ax = gca;ax.YDir='reverse';ax.XScale = 'log';
-%xlim([0.08 4])
+xlim([0.0 imp(isorted_imp(1))*1.2])
 %ylim([.25 24.75])
 % label the bars
 for i=1:20%length(Mdl.PredictorNames)
